@@ -8,6 +8,8 @@ import LForm from "./halamanAwal/FormLogin"
 import SignUp from "./halamanAwal/SignUp"
 import Filtering from "./UserManagement/UM";
 import Mstaff from "./Mstaff/Mstaff";
+import Mstudent from "./mstudent/student";
+import ManajemenDepartment from "./mDepartment/manajemenD";
 
 function App() {
   return (
@@ -15,15 +17,16 @@ function App() {
       <div className="App wrapper">
         <Switch>
           <Route exact path="/" component={Login} />
-          <Route exact path="/LForm" >
-            <LForm />
-          </Route>
+          <Route exact path="/LForm" > <LForm /></Route>
           <Route exact path="/SignUp" component={SignUp} />
+          
             <LayoutDashboard>
             <Route exact path="/muser" component={Filtering} />
             <Route exact path="/mstaff" component={Mstaff} />
-            
+            <Route exact path="/mstudent" component={Mstudent} />
+            <Route exact path="/mdepartment" component={ManajemenDepartment} />
             </LayoutDashboard>
+            
         </Switch>
       </div>
     </Router>

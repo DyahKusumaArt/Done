@@ -4,12 +4,8 @@ import logo from '../assets/image/D.png';
 import "../style/style.css";
 import { useHistory, Link } from "react-router-dom";
 
-import axios from "axios";
-
-
 function LForm() {
     const history = useHistory();
-    const [data, setData] = useState([]);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [msg, setMsg] = useState('');
@@ -32,6 +28,7 @@ function LForm() {
             }
         })
         if (result.status === 200) {
+            
             history.push("/mstaff");
         } else {
             setMsg(true);
@@ -59,21 +56,21 @@ function LForm() {
                                         : (<></>)}
                                     <Form.Group className="mb-4" controlId="formBasicEmail">
                                         <Form.Label>EMAIL</Form.Label>
-                                        <Form.Control size="lg" type="email" placeholder="Email address"
+                                        <Form.Control size="lg" type="email" placeholder="Email address" className="formColor"
                                             onChange={handleEmailChange} value={email} />
 
                                     </Form.Group>
 
-                                    <Form.Group className="mb-3" controlId="formBasicPassword">
+                                    <Form.Group className="mb-3" controlId="formBasicPassword" >
                                         <Form.Label className="d-flex justify-content-between">
                                             <div>PASSWORD </div>
                                             <Link className="text-decoration-none text-dark coba ">Forgot password?</Link>
                                         </Form.Label>
-                                        <Form.Control size="lg" type="password" placeholder="Password"
+                                        <Form.Control size="lg" type="password" placeholder="Password"  className="formColor"
                                             onChange={handlePasswordChange} value={password}
                                         />
                                     </Form.Group>
-                                    <div className="d-grid mb">
+                                    <div className="d-grid" style={{marginBottom:"230px"}}>
                                         <Button variant="primary" type="submit" className="button is-success coba is-fullwidth"
                                         >
                                             Log In

@@ -4,10 +4,8 @@ import "../style/UM.css"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashAlt, faEdit } from '@fortawesome/free-solid-svg-icons';
 import DataTable from "react-data-table-component";
-import moment from "moment";
 import axios from "axios";
-import { useHistory, Link } from "react-router-dom";
-
+import { useHistory } from "react-router-dom";
 
 
 // paginasi
@@ -19,12 +17,17 @@ const paginationComponentOptions = {
 
 };
 const customStyles = {
+    headRow: {
+        style: {
+            
+        }
+    },
     rows: {
         style: {
             // override the row height
             borderBottomStyle: 'none !important',
             borderBottomColor: 'none',
-            margin: '3px 0px'
+            margin: '3px 0px ',
         },
     },
     pagination: {
@@ -32,47 +35,41 @@ const customStyles = {
             borderBlockStart: 'none',
             margin: '7px 0px 0px 0px'
         }
-    }
+    },
 };
 
 //Crud, select, search
 export const Filtering = () => {
     const history = useHistory();
+
     //menampilkan kolom dan isi tabel.
     const columns = [
         {
-            name: "full name",
+            name: "Full Name",
             sortable: true,
-            selector: row => row.name,
+            selector: row => row.full_name,
             center: true,
         },
         {
-            name: "email address",
+            name: "Email Address",
             selector: row => row.email,
             sortable: true,
             center: true,
         },
         {
-            name: "location",
-            selector: row => row.location,
+            name: "Phone Number",
+            selector: row => row.phone,
             sortable: true,
             center: true,
         },
         {
-            name: "joined",
-            selector: row => moment(row.joined).format('MMMM DD, YYYY'),
-            sortable: true,
-            center: true,
-
-        },
-        {
-            name: "permissions",
+            name: "Permissions",
             selector: row => row.role,
             sortable: true,
             center: true,
             conditionalCellStyles: [
                 {
-                    when: row => row.role === 'Employe',
+                    when: row => row.role === 'Employee',
                     style: {
                         borderRadius: '25px',
                         margin: '7px 5px 7px 5px',
@@ -111,60 +108,22 @@ export const Filtering = () => {
             ]
         },
         {
-            name: "edit",
+            name: "Edit",
             center: true,
             cell: row => (
                 <div>
                     <Row>
                         <Col>
-                            <FontAwesomeIcon size="lg" icon={faTrashAlt} onClick={() => alert(row.id)} />
+                            <FontAwesomeIcon size="lg" icon={faEdit} onClick={() => HandleEdit(row.id)} />
                         </Col>
                         <Col>
-                            <FontAwesomeIcon size="lg" icon={faEdit} onClick={() => alert(row.id)} />
+                            <FontAwesomeIcon size="lg" icon={faTrashAlt} onClick={() => handleHapus(row.id)} />
                         </Col>
                     </Row>
                 </div>
             )
         }
     ];
-
-    const checkbox = React.forwardRef(({ onClick, ...rest }, ref) => {
-        return (
-            <>
-                <div className="form-check " style={{ backgroundColor: '' }}>
-                    <input
-                        type="checkbox"
-                        className="form-check-input"
-                        ref={ref}
-                        onClick={onClick}
-                        {...rest}
-                    />
-                </div>
-            </>
-        )
-    })
-
-//get data user
-    const [data, setData] = useState([]);
-    useEffect(() => {
-        getUser();
-    }, [])
-
-    const getUser = async () => {
-        axios.get("http://localhost:3000/users", { withCredentials: 'true' })
-            .then((response) => {
-                setData(response.data);
-                console.log(data)
-            })
-    };
-    //logout
-    const logOut = async () => {
-        axios.delete("http://localhost:3000/logout", { withCredentials: 'true' })
-            .then((response) => {
-                console.log(response)
-                history.push("/");
-            })
-    };
     //fungsi export.
     function convertArrayOfObjectsToCSV(array) {
         let result;
@@ -205,61 +164,166 @@ export const Filtering = () => {
     }
     const Export = ({ onExport }) => <Button className="content2" onClick={e => onExport(e.target.value)}>Export</Button>;
 
-
-
-
-    //modal edit
-
-    //modal add
-    const [buka, setBuka] = useState(false);
-    const handleClose = () => setBuka(false);
-    const handleBuka = () => setBuka(true);
-
-    const [nama, setNama] = useState("");
-    const [permisions, setPermisions] = useState("");
-    const [email, setEmail] = useState("");
-    const [location, setLocation] = useState("");
-    const [password, setPassword] = useState("");
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        let item = { nama, email, permisions, location, password }
-        console.warn(item);
-        let result = await fetch("http://localhost:3000/course_ms/add_user", {
-            method: 'POST',
-            body: JSON.stringify(item),
-            headers: {
-                "Content-Type": "application/json",
-                "Accept": "application/json"
-            }
-        });
-        result = await result.json()
-        localStorage.setItem("user-info", JSON.stringify(result));
-    }
-
-
+    //model checkbox
+    const checkbox = React.forwardRef(({ onClick, ...rest }, ref) => {
+        return (
+            <>
+                <div className="form-check ps-6">
+                    <input
+                        type="checkbox"
+                        className="form-check-input"
+                        ref={ref}
+                        onClick={onClick}
+                        {...rest}
+                    />
+                </div>
+            </>
+        )
+    })
     //select row
     const [selectedRows, setSelectedRows] = React.useState([]);
     const handleRowSelected = React.useCallback(state => {
         setSelectedRows(state.selectedRows);
     }, []);
+    //download csv {file}
+    const actionsMemo = React.useMemo(() => <Export onExport={() => downloadCSV(selectedRows)} />, [selectedRows]);
 
+    //CRUD User Management
+    const [data, setData] = useState([]);
+    //get data user
+    useEffect(() => {
+        getUser();
+    }, [])
 
-    //filtering
+    const getUser = async () => {
+        axios.get("http://localhost:3000/users", { withCredentials: 'true' })
+            .then((response) => {
+                setData(response.data);
+            })
+    };
+    //logout
+    const logOut = async () => {
+        axios.delete("http://localhost:3000/logout", { withCredentials: 'true' })
+            .then((response) => {
+                console.log(response)
+                history.push("/muser");
+            })
+    };
+
+    //modal hapus
+    const [tampil, setTampil] = useState(false);
+    const handleHapus = (id) => {
+        axios.get("http://localhost:3000/users/" + id, { withCredentials: 'true' })
+            .then((response) => {
+                setId(response.data.id);
+                setFullName(response.data.full_name);
+                setEmail(response.data.email);
+                setPhone(response.data.phone);
+                setRole(response.data.role);
+                setPassword(response.data.password);
+                setConfPassword(response.data.password);
+                setTampil(true);
+            });
+    };
+    const deleteData = (id) => {
+        axios.delete("http://localhost:3000/users/" + id, { withCredentials: 'true' })
+            .then(() => {
+                getUser();
+                delState();
+                history.push('/mstaff');
+            });
+        setTampil(false);
+    };
+    const handleTtp = () => {
+        setTampil(false);
+        delState();
+    };
+
+    //modal Edit
+    const [edit, setEdit] = useState(false);
+    const handleTutup = () => {
+        delState();
+        setEdit(false);
+    }
+    const HandleEdit = (id) => {
+        console.log(id);
+        axios.get("http://localhost:3000/users/" + id, { withCredentials: 'true' })
+            .then((response) => {
+                setId(response.data.id);
+                setFullName(response.data.full_name);
+                setEmail(response.data.email);
+                setPhone(response.data.phone);
+                setRole(response.data.role);
+                setPassword(response.data.password);
+                setConfPassword(response.data.password);
+                setEdit(true);
+            });
+    };
+    const updateProduct = async (id) => {
+        axios.patch("http://localhost:3000/users/" + id, {
+            full_name: full_name,
+            phone: phone,
+            email: email,
+            password: password,
+            confPassword: confPassword,
+            role: role,
+        }, { withCredentials: 'true' })
+        history.push('/mstaff', { id });
+
+    }
+    //hapus set modal yang masuk
+    const delState = () => {
+        setId('');
+        setFullName('');
+        setEmail('');
+        setPhone('');
+        setRole('');
+        setPassword('');
+        setConfPassword('');
+    }
+
+    //modal add
+    const [open, setOpen] = useState(false);
+    const handleClose = () => setOpen(false);
+    const handleBuka = () => setOpen(true);
+    const [id, setId] = useState("");
+    const [full_name, setFullName] = useState("");
+    const [role, setRole] = useState("");
+    const [email, setEmail] = useState("");
+    const [phone, setPhone] = useState("");
+    const [password, setPassword] = useState("");
+    const [confPassword, setConfPassword] = useState("");
+    const insertData = async (e) => {
+        e.preventDefault();
+        axios.post('http://localhost:3000/users/', {
+            full_name: full_name,
+            phone: phone,
+            email: email,
+            password: password,
+            confPassword: confPassword,
+        }).then((response) => {
+            console.log(response);
+            getUser();
+            handleClose();
+        }).catch((error) => {
+            console.log(error);
+        });
+    };
+
+    //filtering data
     const [filterText, setFilterText] = React.useState('');
     const [filterE, setFilterE] = React.useState('');
     const [filterS, setFilterS] = React.useState('');
 
-    const filterPerm = [...new Set(data.map((item) => item.permissions))];
+    const filterPerm = [...new Set(data.map(item => item.role))];
     const filteredItems = data.filter(
-        item => item.email.toLowerCase().includes(filterE.toLowerCase()) && item.role.includes(filterS),
+        item => item.email.toLowerCase().includes(filterE.toLowerCase()) &&
+            item.full_name.toLowerCase().includes(filterText.toLowerCase()) &&
+            item.role.includes(filterS),
     );
-
-    //download csv {file}
-    const actionsMemo = React.useMemo(() => <Export onExport={() => downloadCSV(selectedRows)} />, [selectedRows]);
 
     return (
         <div className="back mt-4">
-            <div><Button onClick={logOut}>logout</Button></div>
             <div className="content d-flex justify-content-between mb-3">
                 <div>
                     <input className="content1"
@@ -291,8 +355,8 @@ export const Filtering = () => {
                 <div>
                     <span className="end" style={{ marginRight: '35px' }}> {actionsMemo} </span>
                     <span><Button className="content3" onClick={handleBuka}> + New User </Button></span>
-                    <Modal
-                        show={buka}
+                    <Modal //modal tambah
+                        show={open}
                         onHide={handleClose}
                         backdrop="static"
                         size="lg"
@@ -303,29 +367,144 @@ export const Filtering = () => {
                             <Modal.Title>New User</Modal.Title>
                         </Modal.Header>
                         <Modal.Body>
-                            <Form onSubmit={handleSubmit}>
+                            <Form onSubmit={insertData}>
                                 <Row>
                                     <Col>
-                                        <Form.Group className="mb-3" controlId="formBasicEmail">
+                                        <Form.Group className="mb-3" controlId="formBasicName">
                                             <Form.Label>Full Name</Form.Label>
                                             <Form.Control type="text" placeholder="Full Name"
-                                                value={nama}
-                                                onChange={(e) => setNama(e.target.value)} />
+                                               
+                                                onChange={(e) => setFullName(e.target.value)} />
                                         </Form.Group>
                                     </Col>
                                     <Col>
-                                        <Form.Group className="mb-3" controlId="formBasicEmail">
-                                            <Form.Label>Permisions</Form.Label>
-                                            <Form.Control type="text" placeholder="permission"
-                                                value={permisions}
-                                                onChange={(e) => setPermisions(e.target.value)} />
+                                        <Form.Group className="mb-3" controlId="formBasicPhone">
+                                            <Form.Label>Phone Number</Form.Label>
+                                            <Form.Control type="number" placeholder="Phone number"
+                                               
+                                                onChange={(e) => setPhone(e.target.value)} />
                                         </Form.Group>
 
                                     </Col>
                                 </Row>
                                 <Row>
                                     <Col>
+                                        <Form.Group className="mb-3" controlId="formBasicEmail">
+                                            <Form.Label>Email</Form.Label>
+                                            <Form.Control type="email" placeholder="Email"
+                                                
+                                                onChange={(e) => setEmail(e.target.value)} />
+                                        </Form.Group>
+                                    </Col>
+                                    <Col>
+                                        <Form.Group className="mb-3" controlId="formBasicEmail">
+                                            <Form.Label>Permissions</Form.Label>
+                                            <Form.Control type="text" placeholder="Email" disabled
+                                                value="Guest"
+                                                />
+                                        </Form.Group>
+                                    </Col>
+                                    
+                                </Row>
+                                <Row>
+                                    <Col>
                                         <Form.Group className="mb-3" controlId="formBasicPassword">
+                                            <Form.Label>Password</Form.Label>
+                                            <Form.Control type="password" placeholder="Password"
+                                              
+                                                onChange={(e) => setPassword(e.target.value)} />
+                                        </Form.Group>
+                                    </Col>
+                                    <Col>
+                                        <Form.Group className="mb-3" controlId="formBasicPassword">
+                                            <Form.Label>Confirm Password</Form.Label>
+                                            <Form.Control type="password" placeholder="Confirm Password"
+                                               
+                                                onChange={(e) => setConfPassword(e.target.value)} />
+                                        </Form.Group>
+                                    </Col>
+                                </Row>
+
+                                <Row className="mx-auto">
+                                    <Button variant="success" type="submit" >
+                                        Save
+                                    </Button>
+                                </Row>
+                            </Form>
+                        </Modal.Body>
+                    </Modal>
+
+                    <Modal //delete
+                        show={tampil}
+                        onHide={handleTtp}
+                        backdrop="static"
+                        size="lg"
+                        keyboard={false}
+                        centered
+                    >
+                        <Modal.Header closeButton>
+                        
+                        </Modal.Header>
+                        <Modal.Body>
+                        <img className="text-center d-flex justify-content-center mx-auto" style={{alignItems:'center', width:'100px', height:'100px'}}
+                        src="https://cdn-icons-png.flaticon.com/512/4201/4201973.png" alt="drive image"/>
+                            <Row>
+                                <h2 className="text-center">Are You Sure?</h2>
+                            </Row>
+                            <Row className="pb-3">
+                                <Col className="text-center">
+                                    <h4>Do you want to delete "{full_name}"?</h4>
+                                </Col>
+                            </Row>
+                            {/* <Row>
+                                        <Col className="text-center mb-4">
+                                            <h2>email: {item.email}</h2>
+                                        </Col>
+                                    </Row> */}
+                            <Row className=" mx-auto">
+                                <Button className="red" key={id} variant="danger" type="submit" onClick={() => deleteData(id)}>
+                                    Delete
+                                </Button>
+                            </Row>
+
+                        </Modal.Body>
+                    </Modal>
+
+                    <Modal //modal edit
+                        show={edit}
+                        onHide={handleTutup}
+                        backdrop="static"
+                        size="lg"
+                        keyboard={false}
+                        centered
+                    >
+                        <Modal.Header closeButton>
+                            <Modal.Title>Edit User</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+
+                            <Form onSubmit={() => updateProduct(id)}>
+                                <Row>
+                                    <Col>
+                                        <Form.Group className="mb-3" controlId="formBasicName">
+                                            <Form.Label>Full Name</Form.Label>
+                                            <Form.Control type="text" placeholder="Full Name"
+                                                value={full_name}
+                                                onChange={(e) => setFullName(e.target.value)} />
+                                        </Form.Group>
+                                    </Col>
+                                    <Col>
+                                        <Form.Group className="mb-3" controlId="formBasicPhone">
+                                            <Form.Label>Phone Number</Form.Label>
+                                            <Form.Control type="number" placeholder="ex: 081"
+                                                value={phone}
+                                                onChange={(e) => setPhone(e.target.value)} />
+                                        </Form.Group>
+                                    </Col>
+                                </Row>
+                                <Row>
+                                    <Col>
+                                        <Form.Group className="mb-3" controlId="formBasicEmail">
                                             <Form.Label>Email Id</Form.Label>
                                             <Form.Control type="email" placeholder="Email"
                                                 value={email}
@@ -333,37 +512,48 @@ export const Filtering = () => {
                                         </Form.Group>
                                     </Col>
                                     <Col>
-                                        <Form.Group className="mb-3" controlId="formBasicPassword">
-                                            <Form.Label>Location</Form.Label>
-                                            <Form.Control type="text" placeholder="Location"
-                                                value={location}
-                                                onChange={(e) => setLocation(e.target.value)} />
-                                        </Form.Group>
+                                        <Form.Label>Permissions</Form.Label>
+                                        <Form.Select aria-label="Default select example" onChange={(e) => setRole(e.target.value)}>
+                                            <option value={role}>{role}</option>
+                                            <option value="Employee">Employee</option>
+                                            <option value="Admin">Admin</option>
+                                            <option value="Student">student</option>
+                                        </Form.Select>
                                     </Col>
                                 </Row>
                                 <Row>
-                                    <Col>
-                                        <Form.Group className="mb-3" controlId="formBasicPassword">
-                                            <Form.Label>Password</Form.Label>
-                                            <Form.Control type="password" placeholder="Password"
-                                                value={password}
-                                                onChange={(e) => setPassword(e.target.value)} />
-                                        </Form.Group>
-                                    </Col>
+                                    {/* <Col>
+                                                <Form.Group className="mb-3" controlId="formBasicPassword">
+                                                    <Form.Label>Password</Form.Label>
+                                                    <Form.Control type="password" placeholder="Password"
+                                                        value={password}
+                                                        onChange={(e) => setPassword(e.target.value)} />
+                                                </Form.Group>
+                                            </Col>
+                                            <Col>
+                                                <Form.Group className="mb-3" controlId="formBasicPassword">
+                                                    <Form.Label>Confirm Password</Form.Label>
+                                                    <Form.Control type="password" placeholder="Password"
+                                                        value={confPassword}
+                                                        onChange={(e) => setConfPassword(e.target.value)} />
+                                                </Form.Group>
+                                            </Col> */}
                                 </Row>
-                                <Row className="col-md-8 mx-auto">
-                                    <Button bsPrefix="addButton" variant="primary" type="submit" >
+                                <Row className=" mx-auto">
+                                    <Button variant="success" type="submit" >
                                         Save
                                     </Button>
                                 </Row>
-
                             </Form>
+
                         </Modal.Body>
                     </Modal>
                 </div>
             </div>
-            <div className="border">
+            <div className="shadow">
                 <DataTable
+                    keyField='id'
+                    key={'id'}
                     title="User"
                     columns={columns}
                     data={filteredItems}

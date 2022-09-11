@@ -12,7 +12,7 @@ console.log(active);
         <>
         <div>
         <Sidebar active={active} />
-        <Header active={active} setActive={setActive} />
+        <Header active={active} setActive={setActive}  />
         <main
             className={
             active

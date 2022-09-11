@@ -4,20 +4,12 @@ import logo from '../assets/image/D.png';
 import { Nav, NavItem } from "react-bootstrap";
 import { NavLink } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUsers, faUserShield, faCalendarAlt, faShoppingBag, faChartLine, faSlidersH, faIdBadge, faChartPie, faStickyNote } from '@fortawesome/free-solid-svg-icons';
+import { faUsers, faUserShield, faCalendarAlt, faShoppingBag, faChartLine, faChartPie, faStickyNote } from '@fortawesome/free-solid-svg-icons';
 
 const tabs = [{
   route: "/home",
   icon: faChartPie,
   label: "Overview"
-}, {
-  route: "/contact",
-  icon: faIdBadge,
-  label: "Contact"
-}, {
-  route: "/setting",
-  icon: faSlidersH,
-  label: "Setting"
 }, {
   route: "/muser",
   icon: faUsers,
@@ -26,7 +18,15 @@ const tabs = [{
   route: "/mstaff",
   icon: faUserShield,
   label: "Manajemen Employee"
-}, {
+},{
+  route: "/mstudent",
+  icon: faUserShield,
+  label: "Manajemen Student"
+} ,{
+  route: "/mdepartment",
+  icon: faUserShield,
+  label: "Manajemen Department"
+} ,{
   route: "/mjadwal",
   icon: faCalendarAlt,
   label: "Manajemen Jadwal"
@@ -38,7 +38,8 @@ const tabs = [{
   route: "/mreport",
   icon: faChartLine,
   label: "Manajemen Report"
-}]
+}];
+
 
 function Sidebar({ active }) {
   return (

@@ -88,27 +88,13 @@ input[type="checkbox"] {
     border: 1px solid black;
 }
 
-.modal-header {
-    background-color: #F2AD00;
-}
-
-.col .hari {
-    background: #F4B61B;
-    padding: 5px 20px;
-    width: 100px;
-    margin: 5px;
-    border-radius: 10px;
-    color: white;
-}
 
 .Mbody {
     background-color: #383F51;
     color: white;
 }
 
-.nama {
-    padding: 25px 0px;
-}
+
 .addButton{
     background-color: #6CC4F4;
     height: 35px;
@@ -119,9 +105,13 @@ input[type="checkbox"] {
 .form-check{ 
     filter: invert(70%) hue-rotate(180deg) brightness(1.5) !important;
 }
+
 .form-check .input{ 
     width: 10px !important;
     height: 30px !important;
     padding: 30px 20px 30px 20px !important;
 }
 
+.ps-6{
+    padding-left: 3.1rem!important;
+}

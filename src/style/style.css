@@ -79,6 +79,9 @@
     align-items: center;
 }
 
+.formColor {
+    background-color: #FCFDFE !important;
+}
 
 /*Lform*/
 .Container {
@@ -95,9 +98,7 @@
 }
 
 .space {
-    padding-top: 158px;
-    margin: 0px 390px;
-
+    padding-top: 138px;
 }
 
 .dash {
@@ -125,8 +126,9 @@
     padding-right: 32px;
     text-align: left;
 }
+
 .mb {
-    margin-bottom: 180px;
+    margin-bottom: 10px;
 }
 
 /* sidebar header*/
@@ -138,15 +140,16 @@ a:hover {
     width: 32px;
     height: 32px;
 }
-header{
-    z-index: 1000;
+
+header {
+    z-index: 1;
 }
 
 .nav-link.active {
     background-color: #dc3545 !important;
     color: #FFFFFF !important;
     margin: 15px 10px 20px 36px;
-    
+
 }
 
 .nav-link {
@@ -178,24 +181,74 @@ header{
     text-align: center;
 }
 
-
+input[type="time"] {
+    border: 0 !important;
+    outline: none;
+    width: 100px;
+    height: 35px;
+    text-align: center;
+}
+.istirahat{
+    font-size: 15px;
+    font-weight: 700;
+    background: #1776dc;
+    padding: 5px;
+    height: 35px;
+    width: 90px;
+    margin-left: 50px;
+    border-radius: 10px;
+    color: white;
+    text-align: center;
+}
 input[type="time"]::-webkit-calendar-picker-indicator {
-    width: 20px;
-    height: 14px;
-    background: url("https://mywildalberta.ca/images/GFX-MWA-Parks-Reservations.png")no-repeat;
+    background: none;
+    display: none;
+}
+.rowJam {
+    margin-top: 8px;
+}
+.hari {
+    font-size: 15px;
+    font-weight: 700;
+    background: #F4B61B;
+    padding: 5px;
+    height: 35px;
+    width: 90px;
+    border-radius: 10px;
+    color: white;
+    text-align: center;
+}
+
+.title-edit{
+    font-weight: 500;
+    background: #c82222;
+    padding: 7px;
+    height: 40px;
+    color: #fff;
+    text-align: center;
+}
+
+.header-schedule .btn-close{
+    width: 100px !important;
+    height: 100px !important;
+    background: transparent url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23000'%3e%3cpath d='M.293.293a1 1 0 0 1 1.414 0L8 6.586 14.293.293a1 1 0 1 1 1.414 1.414L9.414 8l6.293 6.293a1 1 0 0 1-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 0 1-1.414-1.414L6.586 8 .293 1.707a1 1 0 0 1 0-1.414z'/%3e%3c/svg%3e") center/30px auto no-repeat !important;
 }
 /**/
-.edit{
+.edit {
     font-family: 'Roboto';
     text-transform: capitalize;
 }
 
 
 /**/
-.TextU{
+.TextU {
     margin-right: 30px;
 }
-.back{
+
+.back {
     font-family: 'Roboto';
 }
 
+.w-35{
+    width: 30% !important;
+}

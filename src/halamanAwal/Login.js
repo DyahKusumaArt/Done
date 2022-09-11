@@ -1,8 +1,7 @@
-import { Form, Container, Button } from "react-bootstrap";
-import React, { useEffect, useState } from "react";
+import { Container, Button } from "react-bootstrap";
+import React from "react";
 import "../style/style.css";
 import { Link } from "react-router-dom";
-import { useHistory } from "react-router-dom";
 import G from "../assets/image/G.jpg";
 import E from "../assets/image/email.jpg";
 
@@ -21,7 +20,7 @@ function Login() {
 
         <div className='Signin' >
           <span >
-            <img src={G} width="55px" height="54px" style={{
+            <img src={G} alt="gambar" width="55px" height="54px" style={{
               marginBottom: "2px",
             }} />
             </span>
@@ -32,7 +31,7 @@ function Login() {
         </div>
         <div className='login' >
           <span >
-            <img src={E} width="55px" height="49px" style={{
+            <img src={E} width="55px" alt="gambar" height="49px" style={{
               marginBottom: "2px",
             }} /></span>
 

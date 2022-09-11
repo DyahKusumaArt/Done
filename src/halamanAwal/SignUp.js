@@ -10,44 +10,36 @@ function SignIn() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confPassword, setConfPassword] = useState('');
-  const [role, setRole] = useState('');
-
-  //login
-
-  const handleEmailChange = e => {
-    setEmail(e.target.value)
-  };
-  const handlePasswordChange = e => {
-    setPassword(e.target.value)
-  };
-  const handleConfPasswordChange = e => {
-    setConfPassword(e.target.value)
-  };
-  const handleRole = e => {
-    setRole(e.target.value)
-  };
-
+  const [full_name, setFullname] = useState('');
+  const [phone, setPhone] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    let item = { email ,password, confPassword, role}
+    let item = { full_name,phone, email, password, confPassword }
     console.warn(item);
-    let result = await fetch("http://localhost:3000/users", {
+    fetch("http://localhost:3000/users", {
       method: 'POST',
       body: JSON.stringify(item),
       headers: {
         "Content-Type": "application/json",
         "Accept": "application/json"
       }
-    });
-    result = await result.json()
-    localStorage.setItem("user-info", JSON.stringify(result));
-    history.push("/muser");
+    }).then(
+      (res)=>{
+        localStorage.setItem("user-info", JSON.stringify(res));
+        history.push("/LForm");
+      } )
+      .catch(
+        (err)=>{
+          console.log(err);
+        }
+      )
+    
   }
   return (
     <div className="bgLogin">
       <div className="space">
-        <Container>
+        <Container className="px-lg-5">
           <Card>
             <Card.Body>
               <Card.Title className="text-center">
@@ -60,35 +52,40 @@ function SignIn() {
               <Card.Body>
 
                 <Form onSubmit={handleSubmit}>
-                  <p className="has-text-centered"></p>
-                  <Form.Group className="mb-4" controlId="formBasicEmail">
-                    <Form.Label>EMAIL</Form.Label>
-                    <Form.Control size="lg" type="email" placeholder="Enter email"
-                      onChange={handleEmailChange} value={email} />                  
+                  <Form.Group className="mb-2" controlId="formBasicName">
+                    <Form.Label>Full Name</Form.Label>
+                    <Form.Control size="lg" type="text" placeholder="Full Name" className="formColor"
+                      onChange={(e) => setFullname(e.target.value)} value={full_name} />
                   </Form.Group>
-
-
-                  <Form.Group className="mb-3" controlId="formBasicPassword">
+                  <Form.Group className="mb-2" controlId="formBasicPhone">
+                    <Form.Label>Phone</Form.Label>
+                    <Form.Control size="lg" type="number" placeholder="Phone" className="formColor"
+                      onChange={(e) => setPhone(e.target.value)} value={phone} />
+                  </Form.Group>
+                  <Form.Group className="mb-2" controlId="formBasicEmail">
+                    <Form.Label>EMAIL</Form.Label>
+                    <Form.Control size="lg" type="email" placeholder="Email Address" className="formColor"
+                      onChange={(e) => setEmail(e.target.value)} value={email} />
+                  </Form.Group>
+                  <Form.Group className="mb-2" controlId="formBasicPassword">
                     <Form.Label className="d-flex justify-content-between">
                       <div>PASSWORD </div>
                     </Form.Label>
-                    <Form.Control size="lg" type="password" placeholder="Password"
-                     onChange={handlePasswordChange} value={password}
+                    <Form.Control size="lg" type="password" placeholder="Password" className="formColor"
+                      onChange={(e) => setPassword(e.target.value)} value={password}
                     />
                   </Form.Group>
-                  <Form.Group className="mb-3" controlId="formBasicPassword">
+                  <Form.Group className="mb-3 " controlId="formBasicConfPassword">
                     <Form.Label className="d-flex justify-content-between">
                       <div>CONFIRM PASSWORD </div>
                     </Form.Label>
-                    <Form.Control size="lg" type="password" placeholder="Password"
-                     onChange={handleConfPasswordChange} value={confPassword}
+                    <Form.Control size="lg" type="password" placeholder="Confirm Password" className="formColor"
+                      onChange={(e) => setConfPassword(e.target.value)} value={confPassword}
                     />
                   </Form.Group>
                   <div className="mb d-grid">
                     <Button variant="primary" type="submit" className="button is-success is-fullwidth"
-                    >
-
-                      Create Account
+                    > Create Account
                     </Button>
                   </div>
                 </Form>

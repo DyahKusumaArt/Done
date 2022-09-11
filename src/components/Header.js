@@ -1,5 +1,5 @@
 import React from "react";
-import { Navbar, Button, Container } from "react-bootstrap";
+import { Navbar, Button, Container,Dropdown } from "react-bootstrap";
 import logo from '../assets/image/D.png';
 function Header({ active, setActive }) {
   return (
@@ -20,18 +20,23 @@ function Header({ active, setActive }) {
           <i className="fas fa-bars"></i>
         </Button>
         <div className={active ? "" : "n-active"}>
-          <i className="fas fa-bell" style={{marginRight:"35px"}}></i>
+          
+          
+          
+          <i className="fas fa-bell" style={{ marginRight: "35px" }}></i>
           <Navbar.Text className="text-end" style={{marginRight:"15px "}}>
             Ida ayu made dyah kusuma
           </Navbar.Text>
-          <img
+            <img
             width="40"
             height="40"
             className="justify-content-end me-3 rounded-circle "
-            style={{width:"35px", height:"35px"}}
+            style={{ width: "35px", height: "35px" }}
             src={logo}
             alt="l"
           />
+         
+          
         </div>
       </header>
     </Container>
