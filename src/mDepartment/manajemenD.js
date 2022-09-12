@@ -2,7 +2,7 @@ import { Button, Row, Col, Modal, Form } from "react-bootstrap";
 import React, { useEffect, useState } from "react";
 import "../style/style.css"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
+import { faTrashAlt, faEdit } from '@fortawesome/free-solid-svg-icons';
 import DataTable from "react-data-table-component";
 import axios from "axios";
 
@@ -68,6 +68,13 @@ export const ManajemenDepartment = () => {
                             <Button size="md" style={{ color: 'black' }} onClick={() => handleEdit(row.id)} >
                                 <FontAwesomeIcon size="md" icon={faEdit} />
                             </Button>
+
+                        </Col>
+                        <Col>
+
+                            <Button size="md" style={{ color: 'black' }} variant="danger" onClick={() => handleHapus(row.id)}  >
+                                <FontAwesomeIcon size="lg" icon={faTrashAlt} />
+                            </Button>
                         </Col>
 
                     </Row>
@@ -75,13 +82,13 @@ export const ManajemenDepartment = () => {
             )
         }
     ];
-const [data, setData] = useState([]);
+    const [data, setData] = useState([]);
     //filtering
     const [filterText, setFilterText] = React.useState('');
     const filteredItems = data.filter(
         item => item.name.toLowerCase().includes(filterText.toLowerCase())
     );
-   
+
     //menampilkan employee
     useEffect(() => {
         getDepartmet();
@@ -103,23 +110,43 @@ const [data, setData] = useState([]);
     //modal add
     const [buka, setBuka] = useState(false);
     const addEmployee = async (id) => {
-            axios.post("http://localhost:3000/department", {
-                name: name,
-            }, { withCredentials: 'true' })
-                .then(() => {
-                    console.log('mau');
-                })
+        axios.post("http://localhost:3000/department", {
+            name: name,
+        }, { withCredentials: 'true' })
+            .then(() => {
+                console.log('mau');
+            })
+    };
+    const [hapus, setHapus] = useState(false);
+    const handleHapus = (id) => {
+        axios.get("http://localhost:3000/department/" + id, { withCredentials: 'true' })
+            .then((response) => {
+                setId(response.data.id);
+                setName(response.data.name);
+                setHapus(true);
+            });
+    };
+    const deleteData = (id) => {
+        axios.delete("http://localhost:3000/department/" + id, { withCredentials: 'true' })
+            .then(() => {
+                getDepartmet();
+
+                setHapus(false);
+            });
+    };
+    const handleClose = () => {
+        setHapus(false);
     };
 
     //modal edit
     const [tampil, setTampil] = useState(false);
     const handleTtp = () => setTampil(false);
     const handleEdit = (id) => {
-        axios.get("http://localhost:3000/department/" + id , { withCredentials: 'true' })
+        axios.get("http://localhost:3000/department/" + id, { withCredentials: 'true' })
             .then((response) => {
                 setId(response.data.id);
                 setName(response.data.name);
-               setTampil(true);
+                setTampil(true);
             });
     };
     const updateProduct = async () => {
@@ -146,7 +173,7 @@ const [data, setData] = useState([]);
         <div className="back mt-3">
             <div className="content d-flex mb-4 ">
 
-                <h3 className="TextU pt-1">Student List</h3>
+                <h3 className="TextU pt-1">Department List</h3>
                 <Button className="shadow" style={{ marginRight: "30px", backgroundColor: '#233EAE', height: "37px", width: "135px", borderRadius: "50px" }}
                     onClick={handleBuka}> ADD NEW   +</Button>
                 <input className="text-center shadow"
@@ -184,16 +211,16 @@ const [data, setData] = useState([]);
                                 <Col>
                                     <Form.Group className="mb-3" controlId="formBasicName">
                                         <Form.Label>Nama Department</Form.Label>
-                                        <Form.Control type="text"  placeholder="Full Name" onChange={(e) => setName(e.target.value)} />
+                                        <Form.Control type="text" placeholder="Full Name" onChange={(e) => setName(e.target.value)} />
                                     </Form.Group>
                                 </Col>
-                                
+
                             </Row>
                             <Row className=" mx-auto">
-                                            <Button  variant="success" type="submit" >
-                                                Save
-                                            </Button>
-                                        </Row>
+                                <Button variant="success" type="submit" >
+                                    Save
+                                </Button>
+                            </Row>
                         </Form>
                     </Modal.Body>
                 </Modal>
@@ -212,7 +239,7 @@ const [data, setData] = useState([]);
                     <Modal.Body>
                         <Form onSubmit={() => updateProduct(id)}>
                             <Row>
-                                
+
                                 <Col>
                                     <Form.Group className="mb-3" controlId="formBasicAddress">
                                         <Form.Label>Nama Department</Form.Label>
@@ -223,6 +250,41 @@ const [data, setData] = useState([]);
                                 </Col>
                             </Row>
                         </Form>
+                    </Modal.Body>
+                </Modal>
+                <Modal //delete
+                    show={hapus}
+                    onHide={handleClose}
+                    backdrop="static"
+                    size="lg"
+                    keyboard={false}
+                    centered
+                >
+                    <Modal.Header closeButton>
+
+                    </Modal.Header>
+                    <Modal.Body>
+                        <img className="text-center d-flex justify-content-center mx-auto" style={{ alignItems: 'center', width: '100px', height: '100px' }}
+                            src="https://cdn-icons-png.flaticon.com/512/4201/4201973.png" alt="drive image" />
+                        <Row>
+                            <h2 className="text-center">Are You Sure?</h2>
+                        </Row>
+                        <Row className="pb-3">
+                            <Col className="text-center">
+                                <h4>Do you want to delete "{name}"?</h4>
+                            </Col>
+                        </Row>
+                        {/* <Row>
+                                        <Col className="text-center mb-4">
+                                            <h2>email: {item.email}</h2>
+                                        </Col>
+                                    </Row> */}
+                        <Row className=" mx-auto">
+                            <Button className="red" key={id} variant="danger" type="submit" onClick={() => deleteData(id)}>
+                                Delete
+                            </Button>
+                        </Row>
+
                     </Modal.Body>
                 </Modal>
 

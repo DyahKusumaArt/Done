@@ -87,10 +87,15 @@ export const Mstaff = () => {
                 <div>
                     <Row>
                         <Col>
-                            <FontAwesomeIcon size="lg" icon={faEdit} onClick={() => handleEdit(row.id)} />
+                            <Button size="md" variant="primary" style={{ color: 'black' }} onClick={() => handleEdit(row.id)} >
+                                <FontAwesomeIcon size="md" icon={faEdit} />
+                            </Button>
                         </Col>
                         <Col>
-                            <FontAwesomeIcon size="lg" icon={faCalendarAlt} onClick={() => handleShow(row.id)} />
+                            <Button size="md" style={{ color: 'black' }}variant="warning" onClick={() => handleShow(row.id)} >
+                                <FontAwesomeIcon size="md" icon={faCalendarAlt} />
+                            </Button>
+
                         </Col>
                     </Row>
                 </div>
@@ -656,13 +661,11 @@ export const Mstaff = () => {
                                             <Col>
                                                 <Form.Label>Select Department</Form.Label>
                                                 <Form.Select aria-label="Default select coba" onChange={(e) => setDepartment(e.target.value)}>
-                                                <option value="">Select Department</option>
+                                                    <option value="">Select Department</option>
                                                     {
                                                         dataDe.map((item) => (
                                                             <>
-                                                                
                                                                 <option value={item.id}>{item.id} {item.name}</option>
-                                                               
                                                             </>
                                                         ))
                                                     }
@@ -1491,7 +1494,7 @@ export const Mstaff = () => {
                         className="table-staff"
                         title="User"
                         columns={columns}
-                        data={filteredItems}
+                        data={filteredItems && data}
                         pagination
                         paginationComponentOptions={paginationComponentOptions}
                         fixedHeader

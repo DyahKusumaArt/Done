@@ -19,7 +19,7 @@ const paginationComponentOptions = {
 const customStyles = {
     headRow: {
         style: {
-            
+
         }
     },
     rows: {
@@ -114,10 +114,14 @@ export const Filtering = () => {
                 <div>
                     <Row>
                         <Col>
-                            <FontAwesomeIcon size="lg" icon={faEdit} onClick={() => HandleEdit(row.id)} />
+                            <Button size="md" style={{ color: 'black' }} onClick={() => HandleEdit(row.id)} >
+                                <FontAwesomeIcon size="md" icon={faEdit} />
+                            </Button>
                         </Col>
                         <Col>
-                            <FontAwesomeIcon size="lg" icon={faTrashAlt} onClick={() => handleHapus(row.id)} />
+                            <Button size="md" style={{ color: 'black' }} variant="danger" onClick={() => handleHapus(row.id)}  >
+                                <FontAwesomeIcon size="lg" icon={faTrashAlt} />
+                            </Button>
                         </Col>
                     </Row>
                 </div>
@@ -373,7 +377,7 @@ export const Filtering = () => {
                                         <Form.Group className="mb-3" controlId="formBasicName">
                                             <Form.Label>Full Name</Form.Label>
                                             <Form.Control type="text" placeholder="Full Name"
-                                               
+
                                                 onChange={(e) => setFullName(e.target.value)} />
                                         </Form.Group>
                                     </Col>
@@ -381,7 +385,7 @@ export const Filtering = () => {
                                         <Form.Group className="mb-3" controlId="formBasicPhone">
                                             <Form.Label>Phone Number</Form.Label>
                                             <Form.Control type="number" placeholder="Phone number"
-                                               
+
                                                 onChange={(e) => setPhone(e.target.value)} />
                                         </Form.Group>
 
@@ -392,7 +396,7 @@ export const Filtering = () => {
                                         <Form.Group className="mb-3" controlId="formBasicEmail">
                                             <Form.Label>Email</Form.Label>
                                             <Form.Control type="email" placeholder="Email"
-                                                
+
                                                 onChange={(e) => setEmail(e.target.value)} />
                                         </Form.Group>
                                     </Col>
@@ -401,17 +405,17 @@ export const Filtering = () => {
                                             <Form.Label>Permissions</Form.Label>
                                             <Form.Control type="text" placeholder="Email" disabled
                                                 value="Guest"
-                                                />
+                                            />
                                         </Form.Group>
                                     </Col>
-                                    
+
                                 </Row>
                                 <Row>
                                     <Col>
                                         <Form.Group className="mb-3" controlId="formBasicPassword">
                                             <Form.Label>Password</Form.Label>
                                             <Form.Control type="password" placeholder="Password"
-                                              
+
                                                 onChange={(e) => setPassword(e.target.value)} />
                                         </Form.Group>
                                     </Col>
@@ -419,7 +423,7 @@ export const Filtering = () => {
                                         <Form.Group className="mb-3" controlId="formBasicPassword">
                                             <Form.Label>Confirm Password</Form.Label>
                                             <Form.Control type="password" placeholder="Confirm Password"
-                                               
+
                                                 onChange={(e) => setConfPassword(e.target.value)} />
                                         </Form.Group>
                                     </Col>
@@ -443,11 +447,11 @@ export const Filtering = () => {
                         centered
                     >
                         <Modal.Header closeButton>
-                        
+
                         </Modal.Header>
                         <Modal.Body>
-                        <img className="text-center d-flex justify-content-center mx-auto" style={{alignItems:'center', width:'100px', height:'100px'}}
-                        src="https://cdn-icons-png.flaticon.com/512/4201/4201973.png" alt="drive image"/>
+                            <img className="text-center d-flex justify-content-center mx-auto" style={{ alignItems: 'center', width: '100px', height: '100px' }}
+                                src="https://cdn-icons-png.flaticon.com/512/4201/4201973.png" alt="drive image" />
                             <Row>
                                 <h2 className="text-center">Are You Sure?</h2>
                             </Row>
