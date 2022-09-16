@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashAlt, faEdit } from '@fortawesome/free-solid-svg-icons';
 import DataTable from "react-data-table-component";
 import axios from "axios";
+import LayoutDashboard from "../layout/layout";
 
 
 //style
@@ -49,7 +50,7 @@ const paginationComponentOptions = {
 };
 
 //Crud, select, search
-export const ManajemenDepartment = () => {
+export const Department = () => {
     //menampilkan kolom dan isi tabel.
     const columns = [
         {
@@ -65,16 +66,10 @@ export const ManajemenDepartment = () => {
                 <div>
                     <Row>
                         <Col>
-                            <Button size="md" style={{ color: 'black' }} onClick={() => handleEdit(row.id)} >
-                                <FontAwesomeIcon size="md" icon={faEdit} />
-                            </Button>
-
+                            <FontAwesomeIcon size="lg" icon={faEdit} onClick={() => handleEdit(row.id)} />
                         </Col>
                         <Col>
-
-                            <Button size="md" style={{ color: 'black' }} variant="danger" onClick={() => handleHapus(row.id)}  >
-                                <FontAwesomeIcon size="lg" icon={faTrashAlt} />
-                            </Button>
+                            <FontAwesomeIcon size="lg" icon={faTrashAlt} onClick={() => handleHapus(row.id)} />
                         </Col>
 
                     </Row>
@@ -130,17 +125,24 @@ export const ManajemenDepartment = () => {
         axios.delete("http://localhost:3000/department/" + id, { withCredentials: 'true' })
             .then(() => {
                 getDepartmet();
-
                 setHapus(false);
+                setId('');
+                setName('')
             });
     };
     const handleClose = () => {
+        setId('');
+        setName('')
         setHapus(false);
     };
 
     //modal edit
     const [tampil, setTampil] = useState(false);
-    const handleTtp = () => setTampil(false);
+    const handleTtp = () => {
+        setId('');
+        setName('')
+        setTampil(false);
+    }
     const handleEdit = (id) => {
         axios.get("http://localhost:3000/department/" + id, { withCredentials: 'true' })
             .then((response) => {
@@ -156,7 +158,8 @@ export const ManajemenDepartment = () => {
         }, { withCredentials: 'true' })
             .then(
                 () => {
-                    console.log('mau');
+                    setId('');
+                    setName('')
                 }
             ).catch(
                 (eror) => {
@@ -166,150 +169,159 @@ export const ManajemenDepartment = () => {
             )
     }
     const handleTutup = () => {
+        setId('');
+        setName('')
         setBuka(false);
     }
     const handleBuka = () => setBuka(true);
     return (
-        <div className="back mt-3">
-            <div className="content d-flex mb-4 ">
+        <>
+            <LayoutDashboard>
+                <div className="back mt-3">
+                    <div className="content d-flex mb-4 ">
 
-                <h3 className="TextU pt-1">Department List</h3>
-                <Button className="shadow" style={{ marginRight: "30px", backgroundColor: '#233EAE', height: "37px", width: "135px", borderRadius: "50px" }}
-                    onClick={handleBuka}> ADD NEW   +</Button>
-                <input className="text-center shadow"
-                    style={{ color: "white", background: "#233EAE", borderRadius: "50px", marginBottom: "20px", height: "37px", width: "135px" }}
-                    id="search"
-                    type="text"
-                    placeholder=" 
+                        <h3 className="TextU pt-1">Department List</h3>
+                        <Button className="shadow" style={{ marginRight: "30px", backgroundColor: '#233EAE', height: "37px", width: "135px", borderRadius: "50px" }}
+                            onClick={handleBuka}> ADD NEW   +</Button>
+                        <input className="text-center shadow"
+                            style={{ color: "white", background: "#233EAE", borderRadius: "50px", marginBottom: "20px", height: "37px", width: "135px" }}
+                            id="search"
+                            type="text"
+                            placeholder=" 
                         Search ..."
-                    aria-label="Search Input"
-                    value={filterText}
-                    onChange={(e) => setFilterText(e.target.value)}
+                            aria-label="Search Input"
+                            value={filterText}
+                            onChange={(e) => setFilterText(e.target.value)}
 
-                />
-                <Modal //modal add
-                    show={buka}
-                    onHide={handleTutup}
-                    backdrop="static"
-                    size="lg"
-                    keyboard={false}
-                    centered
-                >
-                    <Modal.Header closeButton>
-                        <Row>
-                            <Col xs={9}>
-                                <Modal.Title>Add Department</Modal.Title>
-                            </Col>
-                            <Col xs={3}>
-                            </Col>
-                        </Row>
+                        />
+                        <Modal //modal add
+                            show={buka}
+                            onHide={handleTutup}
+                            backdrop="static"
+                            size="lg"
+                            keyboard={false}
+                            centered
+                        >
+                            <Modal.Header closeButton>
+                                <Row>
+                                    <Col>
+                                        <Modal.Title>Add Department</Modal.Title>
+                                    </Col>
+                                </Row>
 
-                    </Modal.Header>
-                    <Modal.Body>
-                        <Form onSubmit={addEmployee}>
-                            <Row>
-                                <Col>
-                                    <Form.Group className="mb-3" controlId="formBasicName">
-                                        <Form.Label>Nama Department</Form.Label>
-                                        <Form.Control type="text" placeholder="Full Name" onChange={(e) => setName(e.target.value)} />
-                                    </Form.Group>
-                                </Col>
+                            </Modal.Header>
+                            <Modal.Body>
+                                <Form onSubmit={addEmployee}>
+                                    <Row>
+                                        <Col>
+                                            <Form.Group className="mb-3" controlId="formBasicName">
+                                                <Form.Label>Name Department</Form.Label>
+                                                <Form.Control type="text" required placeholder="Full Name" onChange={(e) => setName(e.target.value)} />
+                                            </Form.Group>
+                                        </Col>
 
-                            </Row>
-                            <Row className=" mx-auto">
-                                <Button variant="success" type="submit" >
-                                    Save
-                                </Button>
-                            </Row>
-                        </Form>
-                    </Modal.Body>
-                </Modal>
+                                    </Row>
+                                    <Row className=" mx-auto">
+                                        <Button variant="success" type="submit" >
+                                            Save
+                                        </Button>
+                                    </Row>
+                                </Form>
+                            </Modal.Body>
+                        </Modal>
 
-                <Modal //modal edit
-                    show={tampil}
-                    onHide={handleTtp}
-                    backdrop="static"
-                    size="lg"
-                    keyboard={false}
-                    centered
-                >
-                    <Modal.Header closeButton>
-                        <Modal.Title>Edit User</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <Form onSubmit={() => updateProduct(id)}>
-                            <Row>
+                        <Modal //modal edit
+                            show={tampil}
+                            onHide={handleTtp}
+                            backdrop="static"
+                            size="lg"
+                            keyboard={false}
+                            centered
+                        >
+                            <Modal.Header closeButton>
+                                <Modal.Title>Edit Department</Modal.Title>
+                            </Modal.Header>
+                            <Modal.Body>
+                                <Form onSubmit={() => updateProduct(id)}>
+                                    <Row>
+                                        <Col>
+                                            <Form.Group className="mb-3" controlId="formBasicAddress">
+                                                <Form.Label> Name Department</Form.Label>
+                                                <Form.Control required type="text" placeholder="Name Department"
+                                                    onChange={(e) => setName(e.target.value)} value={name} />
+                                            </Form.Group>
+                                        </Col>
+                                    </Row>
+                                    <Row className=" mx-auto">
+                                        <Button variant="success" type="submit" >
+                                            Save
+                                        </Button>
+                                    </Row>
+                                </Form>
+                            </Modal.Body>
+                        </Modal>
+                        <Modal //delete
+                            show={hapus}
+                            onHide={handleClose}
+                            backdrop="static"
+                            size="lg"
+                            keyboard={false}
+                            centered
+                        >
+                            <Modal.Header closeButton>
 
-                                <Col>
-                                    <Form.Group className="mb-3" controlId="formBasicAddress">
-                                        <Form.Label>Nama Department</Form.Label>
-                                        <Form.Control type="text" placeholder="Address"
-                                            onChange={(e) => setName(e.target.value)} value={name} />
-                                    </Form.Group>
-
-                                </Col>
-                            </Row>
-                        </Form>
-                    </Modal.Body>
-                </Modal>
-                <Modal //delete
-                    show={hapus}
-                    onHide={handleClose}
-                    backdrop="static"
-                    size="lg"
-                    keyboard={false}
-                    centered
-                >
-                    <Modal.Header closeButton>
-
-                    </Modal.Header>
-                    <Modal.Body>
-                        <img className="text-center d-flex justify-content-center mx-auto" style={{ alignItems: 'center', width: '100px', height: '100px' }}
-                            src="https://cdn-icons-png.flaticon.com/512/4201/4201973.png" alt="drive image" />
-                        <Row>
-                            <h2 className="text-center">Are You Sure?</h2>
-                        </Row>
-                        <Row className="pb-3">
-                            <Col className="text-center">
-                                <h4>Do you want to delete "{name}"?</h4>
-                            </Col>
-                        </Row>
-                        {/* <Row>
+                            </Modal.Header>
+                            <Modal.Body>
+                                <img className="text-center d-flex justify-content-center mx-auto" style={{ alignItems: 'center', width: '100px', height: '100px' }}
+                                    src="https://cdn-icons-png.flaticon.com/512/4201/4201973.png" alt="drive image" />
+                                <Row>
+                                    <h2 className="text-center">Are You Sure?</h2>
+                                </Row>
+                                <Row className="pb-3">
+                                    <Col className="text-center">
+                                        <h4>Do you want to delete "{name}"?</h4>
+                                    </Col>
+                                </Row>
+                                {/* <Row>
                                         <Col className="text-center mb-4">
                                             <h2>email: {item.email}</h2>
                                         </Col>
                                     </Row> */}
-                        <Row className=" mx-auto">
-                            <Button className="red" key={id} variant="danger" type="submit" onClick={() => deleteData(id)}>
-                                Delete
-                            </Button>
-                        </Row>
+                                <Row className=" mx-auto">
+                                    <Button className="red" key={id} variant="danger" type="submit" onClick={() => deleteData(id)}>
+                                        Delete
+                                    </Button>
+                                </Row>
 
-                    </Modal.Body>
-                </Modal>
+                            </Modal.Body>
+                        </Modal>
 
-            </div>
-            <div className="shadow">
-                <DataTable
-                    className="table-staff"
-                    title="User"
-                    columns={columns}
-                    data={filteredItems}
-                    pagination
-                    paginationComponentOptions={paginationComponentOptions}
-                    fixedHeader
-                    highlightOnHover
-                    pointerOnHover
-                    responsive
-                    noHeader
-                    fixedHeaderScrollHeight="760px"
-                    customStyles={customStyles}
-                />
-            </div>
-        </div >
+                    </div>
+                    <div className="shadow">
+                        <DataTable
+                            className="table-staff"
+                            title="User"
+                            columns={columns}
+                            data={filteredItems}
+                            pagination
+                            paginationComponentOptions={paginationComponentOptions}
+                            fixedHeader
+                            highlightOnHover
+                            pointerOnHover
+                            responsive
+                            noHeader
+                            fixedHeaderScrollHeight="760px"
+                            customStyles={customStyles}
+                            keyField={id}
+                            key={id}
+                        />
+                    </div>
+                </div >
+            </LayoutDashboard>
+        </>
     );
 };
 
-export default ManajemenDepartment;
+export default Department;
 
 

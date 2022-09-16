@@ -1,7 +1,28 @@
 import React from "react";
+import axios from "axios";
+import { useState, useEffect } from "react";
 import { Navbar, Button, Container,Dropdown } from "react-bootstrap";
 import logo from '../assets/image/D.png';
 function Header({ active, setActive }) {
+  const [coba, setCoba] = useState([]);
+  const email = localStorage.getItem('email');
+  const [error, setError] = useState('');
+  useEffect(() => {
+    getNama();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+  const getNama = async () => {
+    axios.get("http://localhost:3000/users", {withCredentials : "true"})
+      .then((response) => {
+        setCoba(response.data);
+      }).catch((error) => {
+        setError(error.response.data.msg);
+    });
+  };
+  
+  const filtt = coba.filter(
+    item => item.email === email
+  ); 
   return (
     <Container className="edit">
       <header
@@ -24,8 +45,8 @@ function Header({ active, setActive }) {
           
           
           <i className="fas fa-bell" style={{ marginRight: "35px" }}></i>
+          {filtt.map((i)=>(i.full_name))}
           <Navbar.Text className="text-end" style={{marginRight:"15px "}}>
-            Ida ayu made dyah kusuma
           </Navbar.Text>
             <img
             width="40"

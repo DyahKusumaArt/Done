@@ -35,10 +35,15 @@ const tabs = [{
   icon: faShoppingBag,
   label: "Produk Koding Akademi"
 }, {
-  route: "/mreport",
+  route: "/manreport",
   icon: faChartLine,
   label: "Manajemen Report"
-}];
+}, {
+  route: "/mkategori",
+  icon: faChartLine,
+  label: "Manajemen kategori"
+}
+];
 
 
 function Sidebar({ active }) {

@@ -1,5 +1,4 @@
 import "./App.css";
-import LayoutDashboard from "./layout/layout";
 import "@fontsource/roboto";
 import { BrowserRouter as Router } from "react-router-dom";
 import { Switch, Route } from "react-router-dom";
@@ -9,7 +8,9 @@ import SignUp from "./halamanAwal/SignUp"
 import Filtering from "./UserManagement/UM";
 import Mstaff from "./Mstaff/Mstaff";
 import Mstudent from "./mstudent/student";
-import ManajemenDepartment from "./mDepartment/manajemenD";
+import Manreport from "./manajemenReport/manReport";
+import ManajemenKategori from "./ManKategori/Mkategori";
+import Department from "./mDepartment/manajemenD";
 
 function App() {
   return (
@@ -19,14 +20,12 @@ function App() {
           <Route exact path="/" component={Login} />
           <Route exact path="/LForm" > <LForm /></Route>
           <Route exact path="/SignUp" component={SignUp} />
-          
-            <LayoutDashboard>
-            <Route exact path="/muser" component={Filtering} />
-            <Route exact path="/mstaff" component={Mstaff} />
-            <Route exact path="/mstudent" component={Mstudent} />
-            <Route exact path="/mdepartment" component={ManajemenDepartment} />
-            </LayoutDashboard>
-            
+          <Route exact path="/muser" component={Filtering} />
+          <Route exact path="/mstaff" component={Mstaff} />
+          <Route exact path="/mstudent" component={Mstudent} />
+          <Route exact path="/manreport" component={Manreport} />
+          <Route exact path="/mkategori" component={ManajemenKategori}/>
+          <Route exact path="/mdepartment" component={Department} />
         </Switch>
       </div>
     </Router>

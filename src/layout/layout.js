@@ -6,8 +6,6 @@ import { useState } from "react";
 
 const LayoutDashboard =({children}) =>{
 const [active, setActive] = useState(false);
-console.log(active);
-
     return(
         <>
         <div>

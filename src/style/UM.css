@@ -19,7 +19,7 @@
     color: white;
     border-radius: 5px;
     width: 200px;
-    height: 32px;
+    height: 40px;
     text-align: center;
     cursor: pointer;
 }
@@ -30,7 +30,7 @@
     color: white;
     border-radius: 5px;
     width: 100px;
-    height: 32px;
+    height: 40px;
     text-align: center;
     border-color: #707070 !important;
     border: 53% !important;
@@ -43,9 +43,8 @@
     color: white;
     border-radius: 5px;
     width: 200px;
-    height: 32px;
+    height: 40px;
     text-align: center;
-    border-color: #707070 !important;
 
 }
 
@@ -114,4 +113,8 @@ input[type="checkbox"] {
 
 .ps-6{
     padding-left: 3.1rem!important;
+}
+
+.w-45{
+    width: 45% !important;
 }

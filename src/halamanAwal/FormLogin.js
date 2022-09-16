@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import logo from '../assets/image/D.png';
 import "../style/style.css";
 import { useHistory, Link } from "react-router-dom";
+import axios from "axios";
 
 function LForm() {
     const history = useHistory();
@@ -10,29 +11,18 @@ function LForm() {
     const [password, setPassword] = useState('');
     const [msg, setMsg] = useState('');
     //login
-    const handleEmailChange = e => {
-        setEmail(e.target.value)
-    };
-
-    const handlePasswordChange = e => {
-        setPassword(e.target.value)
-    };
     const handleSubmit = async (e) => {
         e.preventDefault();
-        let result = await fetch("http://localhost:3000/login", {
-            method: 'POST',
-            credentials : "include", 
-            body: JSON.stringify({ email, password }),
-            headers: {
-                "Content-Type": "application/json"
-            }
-        })
-        if (result.status === 200) {
-            
+        axios.post('http://localhost:3000/login/', {
+            email: email,
+            password: password,
+        }, { withCredentials: 'true' }).then(() => {
+            localStorage.setItem('email', email);
             history.push("/mstaff");
-        } else {
-            setMsg(true);
-        }
+        }).catch((error) => {
+            console.log(error)
+            setMsg(error.response.data.msg)
+        });
     }
     return (
         <div className="bgLogin">
@@ -50,14 +40,15 @@ function LForm() {
                                 <Form onSubmit={handleSubmit}>
                                     <p className="has-text-centered"></p>
                                     {msg ? (
-                                        <div className="alert alert-danger" role="alert">
-                                            Login gagal, email atau password salah
+                                        <div className="alert alert-danger text-center" role="alert">
+                                            {msg}
                                         </div>)
                                         : (<></>)}
+
                                     <Form.Group className="mb-4" controlId="formBasicEmail">
                                         <Form.Label>EMAIL</Form.Label>
                                         <Form.Control size="lg" type="email" placeholder="Email address" className="formColor"
-                                            onChange={handleEmailChange} value={email} />
+                                        required onChange={(e) => setEmail(e.target.value)} />
 
                                     </Form.Group>
 
@@ -66,11 +57,10 @@ function LForm() {
                                             <div>PASSWORD </div>
                                             <Link className="text-decoration-none text-dark coba ">Forgot password?</Link>
                                         </Form.Label>
-                                        <Form.Control size="lg" type="password" placeholder="Password"  className="formColor"
-                                            onChange={handlePasswordChange} value={password}
-                                        />
+                                        <Form.Control size="lg" type="password" placeholder="Password" className="formColor"
+                                           required onChange={(e) => setPassword(e.target.value)} />
                                     </Form.Group>
-                                    <div className="d-grid" style={{marginBottom:"230px"}}>
+                                    <div className="d-grid" style={{ marginBottom: "230px" }}>
                                         <Button variant="primary" type="submit" className="button is-success coba is-fullwidth"
                                         >
                                             Log In

@@ -5,7 +5,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
 import DataTable from "react-data-table-component";
 import axios from "axios";
-import { useHistory,useLocation } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
+import LayoutDashboard from "../layout/layout";
 
 
 //style
@@ -24,8 +25,8 @@ const customStyles = {
             }
         }
     },
-    tables:{
-        border:"3px !important"
+    tables: {
+        border: "3px !important"
     },
 
     headCells: {
@@ -88,11 +89,8 @@ export const Mstudent = () => {
                 <div>
                     <Row>
                         <Col>
-                        <Button size="md" style={{color:'black'}} onClick={() => handleEdit(row.id)} >
-                            <FontAwesomeIcon size="md" icon={faEdit}/>
-                            </Button>
+                            <FontAwesomeIcon size="lg" icon={faEdit} onClick={() => handleEdit(row.id)} />
                         </Col>
-                        
                     </Row>
                 </div>
             )
@@ -153,18 +151,18 @@ export const Mstudent = () => {
     //modal add
     const [buka, setBuka] = useState(false);
     const addEmployee = async (id) => {
-        filteredID.map((item)=>(
-        axios.post("http://localhost:3000/students", {
-            user_id: user_id,
-            name_student: item.full_name,
-            phone: item.phone,
-            address: address,
-            gender: gender,
-            age: age,
-        }, { withCredentials: 'true' })
-            .then(() => {
-                console.log('mau');
-            })
+        filteredID.map((item) => (
+            axios.post("http://localhost:3000/students", {
+                user_id: user_id,
+                name_student: item.full_name,
+                phone: item.phone,
+                address: address,
+                gender: gender,
+                age: age,
+            }, { withCredentials: 'true' })
+                .then(() => {
+                    console.log('mau');
+                })
         ))
     };
     console.log(filteredID)
@@ -186,7 +184,7 @@ export const Mstudent = () => {
             });
     };
     const updateProduct = async (id) => {
-        axios.patch("http://localhost:3000/students/"+ id, {
+        axios.patch("http://localhost:3000/students/" + id, {
             id: id,
             user_id: user_id,
             name_student: name_student,
@@ -194,7 +192,7 @@ export const Mstudent = () => {
             address: address,
             gender: gender,
             age: age,
-        } )
+        })
             .then(
                 () => {
                     console.log('mau');
@@ -213,194 +211,197 @@ export const Mstudent = () => {
     //modal jadwal
 
     return (
-        <div className="back mt-3">
-            <div className="content d-flex mb-4 ">
+        <>
+            <LayoutDashboard>
+                <div className="back mt-3">
+                    <div className="content d-flex mb-4 ">
 
-                <h3 className="TextU pt-1">Student List</h3>
-                <Button className="shadow" style={{ marginRight: "30px", backgroundColor: '#233EAE', height: "37px", width: "135px", borderRadius: "50px" }}
-                    onClick={handleBuka}> ADD NEW   +</Button>
-                <input className="text-center shadow"
-                    style={{ color: "white", background: "#233EAE", borderRadius: "50px", marginBottom: "20px", height: "37px", width: "135px" }}
-                    id="search"
-                    type="text"
-                    placeholder=" 
+                        <h3 className="TextU pt-1">Student List</h3>
+                        <Button className="shadow" style={{ marginRight: "30px", backgroundColor: '#233EAE', height: "37px", width: "135px", borderRadius: "50px" }}
+                            onClick={handleBuka}> ADD NEW   +</Button>
+                        <input className="text-center shadow"
+                            style={{ color: "white", background: "#233EAE", borderRadius: "50px", marginBottom: "20px", height: "37px", width: "135px" }}
+                            id="search"
+                            type="text"
+                            placeholder=" 
                         Search ..."
-                    aria-label="Search Input"
-                    value={filterText}
-                    onChange={(e) => setFilterText(e.target.value)}
-                    
-                />
+                            aria-label="Search Input"
+                            value={filterText}
+                            onChange={(e) => setFilterText(e.target.value)}
 
-                <Modal //modal add
-                    show={buka}
-                    onHide={handleTutup}
-                    backdrop="static"
-                    size="lg"
-                    keyboard={false}
-                    centered
-                >
-                    <Modal.Header closeButton>
-                        <Row>
-                            <Col xs={9}>
-                                <Modal.Title>Add User Student</Modal.Title>
-                            </Col>
-                            <Col xs={3}>
-                                <Form.Select aria-label="Default select example" style={{width:'110px'}} onChange={(e) => setUserid(e.target.value)}>
-                                    <option value="">User ID</option>
-                                    {user.map((item) => (
-                                    <option value={item.id}>{item.id} {item.full_name}</option>
-                                    ))}
-                                </Form.Select>
-                            </Col>
-                        </Row>
-             
-                    </Modal.Header>
-                    <Modal.Body>
-                        <Form onSubmit={addEmployee}>
-                            {
-                                filteredID.map((item) => (
-                                    <>
-                                        <Row>
-                                            <Col>
-                                                <Form.Group className="mb-3" controlId="formBasicName">
-                                                    <Form.Label>Name</Form.Label>
-                                                    <Form.Control type="text" disabled placeholder="Full Name" value={item.full_name} />
-                                                </Form.Group>
-                                            </Col>
-                                            <Col>
-                                                <Form.Group className="mb-3" controlId="formBasicAddress">
-                                                    <Form.Label>Address</Form.Label>
-                                                    <Form.Control type="text" placeholder="address" onChange={(e) => setAddress(e.target.value)} />
-                                                </Form.Group>
-                                            </Col>
-                                        </Row>
-                                        <Row>-
-                                            <Col>
-                                                <Form.Label>Gender</Form.Label>
-                                                <Form.Select aria-label="Default select example" onChange={(e) => setGender(e.target.value)}>
-                                                    <option value="">Select Gender</option>
-                                                    <option value="male">Male</option>
-                                                    <option value="female">Female</option>
-                                                </Form.Select>
-                                            </Col>
-                                            <Col>
-                                                <Form.Group className="mb-3" controlId="formBasicPhone">
-                                                    <Form.Label>Phone Number</Form.Label>
-                                                    <Form.Control type="text" disabled placeholder="Phone Number" value={item.phone} />
-                                                </Form.Group>
-                                            </Col>
-                                        </Row>
-                                        <Row>
-                                            <Col>
-                                                <Form.Group className="mb-3" controlId="formBasicDepartment">
-                                                    <Form.Label>Age</Form.Label>
-                                                    <Form.Control type="number" placeholder="Age" onChange={(e) => setAge(e.target.value)} />
-                                                </Form.Group>
-                                            </Col>
-                                            <Col>
+                        />
 
-                                            </Col>
-                                        </Row>
-                                        <Row className=" mx-auto">
-                                            <Button  variant="success" type="submit" >
-                                                Save
-                                            </Button>
-                                        </Row>
-                                    </>
-                                ))
-                            }
-                        </Form>
-                    </Modal.Body>
-                </Modal>
+                        <Modal //modal add
+                            show={buka}
+                            onHide={handleTutup}
+                            backdrop="static"
+                            size="lg"
+                            keyboard={false}
+                            centered
+                        >
+                            <Modal.Header closeButton>
+                                <Row>
+                                    <Col xs={9}>
+                                        <Modal.Title>Add User Student</Modal.Title>
+                                    </Col>
+                                    <Col xs={3}>
+                                        <Form.Select aria-label="Default select example" style={{ width: '110px' }} required onChange={(e) => setUserid(e.target.value)}>
+                                            <option value="">User ID</option>
+                                            {user.map((item) => (
+                                                <option value={item.id}>{item.id} - {item.full_name}</option>
+                                            ))}
+                                        </Form.Select>
+                                    </Col>
+                                </Row>
 
-                <Modal //modal edit
-                    show={tampil}
-                    onHide={handleTtp}
-                    backdrop="static"
-                    size="lg"
-                    keyboard={false}
-                    centered
-                >
-                    <Modal.Header closeButton>
-                        <Modal.Title>Edit User</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <Form onSubmit={() => updateProduct(id)}>
-                            <Row>
-                                <Col>
-                                    <Form.Group className="mb-3" controlId="formBasicName">
-                                        <Form.Label>Name</Form.Label>
-                                        <Form.Control type="text" placeholder="Full Name" value={name_student}
-                                            onChange={(e) => setNamestudent(e.target.value)} />
-                                    </Form.Group>
-                                </Col>
-                                <Col>
-                                    <Form.Group className="mb-3" controlId="formBasicAddress">
-                                        <Form.Label>Address</Form.Label>
-                                        <Form.Control type="text" placeholder="Address"
-                                            onChange={(e) => setAddress(e.target.value)} value={address} />
-                                    </Form.Group>
+                            </Modal.Header>
+                            <Modal.Body>
+                                <Form onSubmit={addEmployee}>
+                                    {
+                                        filteredID.map((item) => (
+                                            <>
+                                                <Row>
+                                                    <Col>
+                                                        <Form.Group className="mb-3" controlId="formBasicName">
+                                                            <Form.Label>Name</Form.Label>
+                                                            <Form.Control type="text" disabled placeholder="Full Name" required value={item.full_name} />
+                                                        </Form.Group>
+                                                    </Col>
+                                                    <Col>
+                                                        <Form.Group className="mb-3" controlId="formBasicAddress">
+                                                            <Form.Label>Address</Form.Label>
+                                                            <Form.Control type="text" placeholder="address" required onChange={(e) => setAddress(e.target.value)} />
+                                                        </Form.Group>
+                                                    </Col>
+                                                </Row>
+                                                <Row>-
+                                                    <Col>
+                                                        <Form.Label>Gender</Form.Label>
+                                                        <Form.Select aria-label="Default select example" required onChange={(e) => setGender(e.target.value)}>
+                                                            <option value="">Select Gender</option>
+                                                            <option value="male">Male</option>
+                                                            <option value="female">Female</option>
+                                                        </Form.Select>
+                                                    </Col>
+                                                    <Col>
+                                                        <Form.Group className="mb-3" controlId="formBasicPhone">
+                                                            <Form.Label>Phone Number</Form.Label>
+                                                            <Form.Control type="text" disabled placeholder="Phone Number"required value={item.phone} />
+                                                        </Form.Group>
+                                                    </Col>
+                                                </Row>
+                                                <Row>
+                                                    <Col>
+                                                        <Form.Group className="mb-3" controlId="formBasicDepartment">
+                                                            <Form.Label>Age</Form.Label>
+                                                            <Form.Control type="number" placeholder="Age" required onChange={(e) => setAge(e.target.value)} />
+                                                        </Form.Group>
+                                                    </Col>
+                                                    <Col>
 
-                                </Col>
-                            </Row>
-                            <Row>
-                                <Col>
-                                    <Form.Label>Gender</Form.Label>
-                                    <Form.Select aria-label="Default select example" onChange={(e) => setGender(e.target.value)}>
-                                        <option value={gender}>{gender}</option>
-                                        <option value="male">Male</option>
-                                        <option value="female">Female</option>
-                                    </Form.Select>
-                                </Col>
-                                <Col>
-                                    <Form.Group className="mb-3" controlId="formBasicPassword">
-                                        <Form.Label>Phone Number</Form.Label>
-                                        <Form.Control type="number" placeholder="Phone Number" onChange={(e) => setPhone(e.target.value)} value={phone} />
-                                    </Form.Group>
-                                </Col>
-                            </Row>
-                            <Row>
+                                                    </Col>
+                                                </Row>
+                                                <Row className=" mx-auto">
+                                                    <Button variant="success" type="submit" >
+                                                        Save
+                                                    </Button>
+                                                </Row>
+                                            </>
+                                        ))
+                                    }
+                                </Form>
+                            </Modal.Body>
+                        </Modal>
 
-                                <Col>
-                                    <Form.Group className="mb-3" controlId="formBasicPassword">
-                                        <Form.Label>age</Form.Label>
-                                        <Form.Control type="text" placeholder="Department" onChange={(e) => setAge(e.target.value)} value={age} />
-                                    </Form.Group>
-                                </Col>
-                                <Col>
-                                </Col>
-                            </Row>
+                        <Modal //modal edit
+                            show={tampil}
+                            onHide={handleTtp}
+                            backdrop="static"
+                            size="lg"
+                            keyboard={false}
+                            centered
+                        >
+                            <Modal.Header closeButton>
+                                <Modal.Title>Edit User Student</Modal.Title>
+                            </Modal.Header>
+                            <Modal.Body>
+                                <Form onSubmit={() => updateProduct(id)}>
+                                    <Row>
+                                        <Col>
+                                            <Form.Group className="mb-3" controlId="formBasicName">
+                                                <Form.Label>Name</Form.Label>
+                                                <Form.Control type="text" placeholder="Full Name" required value={name_student}
+                                                    onChange={(e) => setNamestudent(e.target.value)} />
+                                            </Form.Group>
+                                        </Col>
+                                        <Col>
+                                            <Form.Group className="mb-3" controlId="formBasicAddress">
+                                                <Form.Label>Address</Form.Label>
+                                                <Form.Control type="text" placeholder="Address"
+                                                    onChange={(e) => setAddress(e.target.value)} required value={address} />
+                                            </Form.Group>
 
-                            <Row className="col-md-8 mx-auto">
-                                <Button bsPrefix="addButton" variant="primary" type="submit" >
-                                    Save
-                                </Button>
-                            </Row>
-                        </Form>
-                    </Modal.Body>
-                </Modal>
+                                        </Col>
+                                    </Row>
+                                    <Row>
+                                        <Col>
+                                            <Form.Label>Gender</Form.Label>
+                                            <Form.Select aria-label="Default select example" required onChange={(e) => setGender(e.target.value)}>
+                                                <option value={gender}>{gender}</option>
+                                                <option value="male">Male</option>
+                                                <option value="female">Female</option>
+                                            </Form.Select>
+                                        </Col>
+                                        <Col>
+                                            <Form.Group className="mb-3" controlId="formBasicPassword">
+                                                <Form.Label>Phone Number</Form.Label>
+                                                <Form.Control type="number" placeholder="Phone Number" required onChange={(e) => setPhone(e.target.value)} value={phone} />
+                                            </Form.Group>
+                                        </Col>
+                                    </Row>
+                                    <Row>
 
-            </div>
-            <div className="shadow">
-                <DataTable
-                    className="table-staff"
-                    title="User"
-                    columns={columns}
-                    data={filteredItems}
-                    pagination
-                    paginationComponentOptions={paginationComponentOptions}
-                    fixedHeader
-                    highlightOnHover
-                    pointerOnHover
-                    responsive
-                    noHeader
-                    fixedHeaderScrollHeight="760px"
-                    customStyles={customStyles}
-                    keyField='id'
-                    key={'id'}
-                />
-            </div>
-        </div >
+                                        <Col>
+                                            <Form.Group className="mb-3" controlId="formBasicPassword">
+                                                <Form.Label>age</Form.Label>
+                                                <Form.Control type="text" placeholder="Department" required onChange={(e) => setAge(e.target.value)} value={age} />
+                                            </Form.Group>
+                                        </Col>
+                                        <Col>
+                                        </Col>
+                                    </Row>
+                                    <Row className=" mx-auto">
+                                        <Button variant="success" type="submit" >
+                                            Save
+                                        </Button>
+                                    </Row>
+                                </Form>
+                            </Modal.Body>
+                        </Modal>
+
+                    </div>
+                    <div className="shadow">
+                        <DataTable
+                            className="table-staff"
+                            title="User"
+                            columns={columns}
+                            data={filteredItems}
+                            pagination
+                            paginationComponentOptions={paginationComponentOptions}
+                            fixedHeader
+                            highlightOnHover
+                            pointerOnHover
+                            responsive
+                            noHeader
+                            fixedHeaderScrollHeight="760px"
+                            customStyles={customStyles}
+                            keyField='id'
+                            key={'id'}
+                        />
+                    </div>
+                </div >
+            </LayoutDashboard>
+        </>
     );
 };
 
