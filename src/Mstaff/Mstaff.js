@@ -5,7 +5,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
 import DataTable from "react-data-table-component";
 import axios from "axios";
-import { useHistory, useLocation } from "react-router-dom";
 import LayoutDashboard from "../layout/layout";
 
 //style
@@ -49,8 +48,12 @@ const paginationComponentOptions = {
 //Crud, select, search
 export const Mstaff = () => {
     //get 
-    const history = useHistory();
-    const location = useLocation();
+    //filter id by user
+    const [user_id, setUserid] = useState('');
+    const [user, setUser] = useState([]);
+    const [student, setStudent] = useState([]);
+    const [dataDe, setDatade] = useState([]);
+    const filterID = [...new Set(user.map(item => item.id))];
 
     //menampilkan kolom dan isi tabel.
     const columns = [
@@ -68,7 +71,7 @@ export const Mstaff = () => {
         },
         {
             name: "department",
-            selector: row => row.department_id,
+            selector: row => (dataDe.filter(item => item.id == row.department_id)).map((item) => item.name),
             sortable: true,
             center: true,
 
@@ -88,10 +91,8 @@ export const Mstaff = () => {
                         <Col>
 
                             <FontAwesomeIcon size="lg" icon={faEdit} onClick={() => handleEdit(row.id)} />
-
                         </Col>
                         <Col>
-
                             <FontAwesomeIcon size="lg" icon={faCalendarAlt} onClick={() => handleShow(row.id)} />
 
                         </Col>
@@ -114,22 +115,24 @@ export const Mstaff = () => {
         item => item.name_employee.toLowerCase().includes(filterText.toLowerCase())
     );
 
-    //filter id by user
-    const [user_id, setUserid] = useState('');
-    const [user, setUser] = useState([]);
-    const [dataDe, setDatade] = useState([]);
-    const filterID = [...new Set(user.map(item => item.id))];
     //menampilkan employee
     useEffect(() => {
         getEmployee();
         getUser();
         getDepartment();
-    }, [])
+        getStudents();
+    }, []);
     const getDepartment = async () => {
         axios.get("http://localhost:3000/department", { withCredentials: 'true' })
             .then((response) => {
                 setDatade(response.data);
             });
+    };
+    const getStudents = async () => {
+        axios.get("http://localhost:3000/students", { withCredentials: 'true' })
+            .then((response) => {
+                setStudent(response.data);
+            })
     };
 
     const getEmployee = async () => {
@@ -148,6 +151,11 @@ export const Mstaff = () => {
     const filteredID = user.filter(
         item => item && item.id == user_id,
     );
+    
+    const employeeMap = data.map((item) => item.user_id)
+    const studentMap = student.map((item) => item.user_id)
+    const userNew = user.filter(({id})=> !employeeMap.includes(id) && !studentMap.includes(id))
+
     //add employee
     const [id, setId] = useState("");
     const [name_employee, setNameEmployee] = useState("");
@@ -641,7 +649,7 @@ export const Mstaff = () => {
                                     <Col xs={3}>
                                         <Form.Select aria-label="Default select example" style={{ width: '110px' }} required onChange={(e) => setUserid(e.target.value)}>
                                             <option value="">User ID</option>
-                                            {user.map((item) => (
+                                            {userNew.map((item) => (
                                                 <option value={item.id}>{item.id} - {item.full_name}</option>
                                             ))}
                                         </Form.Select>
@@ -767,7 +775,7 @@ export const Mstaff = () => {
                                         <Col>
                                             <Form.Label>Select Department</Form.Label>
                                             <Form.Select aria-label="Default select coba" required onChange={(e) => setDepartment(e.target.value)}>
-                                                <option value={department}>{department}</option>
+                                                <option value={department}>{(dataDe.filter(item => item.id == department)).map((item) => item.name)}</option>
                                                 {
                                                     dataDe.map((item) => (
                                                         <>

@@ -309,7 +309,7 @@ export const ManajemenKategori = () => {
                         </Modal.Header>
                         <Modal.Body>
                             <img className="text-center d-flex justify-content-center mx-auto" style={{ alignItems: 'center', width: '100px', height: '100px' }}
-                                src="https://cdn-icons-png.flaticon.com/512/4201/4201973.png" alt="drive image" />
+                                src="https://cdn-icons-png.flaticon.com/512/4201/4201973.png" alt="drive" />
                             <Row>
                                 <h2 className="text-center">Are You Sure?</h2>
                             </Row>

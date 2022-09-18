@@ -52,10 +52,6 @@ const paginationComponentOptions = {
 
 //Crud, select, search
 export const Mstudent = () => {
-    //get 
-    const history = useHistory();
-    const location = useLocation();
-
     //menampilkan kolom dan isi tabel.
     const columns = [
         {
@@ -113,14 +109,22 @@ export const Mstudent = () => {
     //filter id by user
     const [user_id, setUserid] = useState('');
     const [user, setUser] = useState([]);
+    const [employee, setEmployee] = useState([]);
     const filterID = [...new Set(user.map(item => item.id))];
     //menampilkan employee
     useEffect(() => {
         getStudents();
         getUser();
+        getEmployee();
     }, [])
 
-
+    const getEmployee = async () => {
+        axios.get("http://localhost:3000/employee", { withCredentials: 'true' })
+            .then((response) => {
+                setEmployee(response.data);
+                console.log(data);
+            })
+    };
     const getStudents = async () => {
         axios.get("http://localhost:3000/students", { withCredentials: 'true' })
             .then((response) => {
@@ -137,6 +141,9 @@ export const Mstudent = () => {
     const filteredID = user.filter(
         item => item && item.id == user_id ,
     );
+    const employeeMap = employee.map((item) => item.user_id)
+    const studentMap = data.map((item) => item.user_id)
+    const userNew = user.filter(({id})=> !employeeMap.includes(id) && !studentMap.includes(id))
     //add employee
     const [id, setId] = useState("");
     const [name_student, setNamestudent] = useState("");
@@ -247,7 +254,7 @@ export const Mstudent = () => {
                                     <Col xs={3}>
                                         <Form.Select aria-label="Default select example" style={{ width: '110px' }} required onChange={(e) => setUserid(e.target.value)}>
                                             <option value="">User ID</option>
-                                            {user.map((item) => (
+                                            {userNew.map((item) => (
                                                 <option value={item.id}>{item.id} - {item.full_name}</option>
                                             ))}
                                         </Form.Select>

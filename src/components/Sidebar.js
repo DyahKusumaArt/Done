@@ -4,7 +4,7 @@ import logo from '../assets/image/D.png';
 import { Nav, NavItem } from "react-bootstrap";
 import { NavLink } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUsers, faUserShield, faCalendarAlt, faShoppingBag, faChartLine, faChartPie, faStickyNote } from '@fortawesome/free-solid-svg-icons';
+import { faUsers, faUserShield,faUserTie, faUserGraduate, faCalendarAlt, faRectangleList,faShoppingBag, faChartLine, faChartPie, faStickyNote, } from '@fortawesome/free-solid-svg-icons';
 
 const tabs = [{
   route: "/home",
@@ -13,35 +13,35 @@ const tabs = [{
 }, {
   route: "/muser",
   icon: faUsers,
-  label: "Manajement User"
+  label: "Management User"
 }, {
   route: "/mstaff",
-  icon: faUserShield,
-  label: "Manajemen Employee"
+  icon: faUserTie,
+  label: "Management Employee"
 },{
   route: "/mstudent",
-  icon: faUserShield,
-  label: "Manajemen Student"
+  icon: faUserGraduate,
+  label: "Management Student"
 } ,{
   route: "/mdepartment",
   icon: faUserShield,
-  label: "Manajemen Department"
+  label: "Management Department"
 } ,{
   route: "/mjadwal",
   icon: faCalendarAlt,
-  label: "Manajemen Jadwal"
+  label: "Management Jadwal"
 }, {
   route: "/prudukka",
   icon: faShoppingBag,
-  label: "Produk Koding Akademi"
+  label: "Produk"
+},{
+  route: "/mkategori",
+  icon: faRectangleList,
+  label: "Product Category"
 }, {
   route: "/manreport",
   icon: faChartLine,
-  label: "Manajemen Report"
-}, {
-  route: "/mkategori",
-  icon: faChartLine,
-  label: "Manajemen kategori"
+  label: "Management Report"
 }
 ];
 
