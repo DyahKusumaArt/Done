@@ -66,7 +66,7 @@ export const ManajemenKategori = () => {
             center: true,
         },
         {
-            name: "edit",
+            name: "Action",
             center: true,
             cell: row => (
                 <div>
@@ -196,7 +196,7 @@ export const ManajemenKategori = () => {
 
                 <div className="content d-flex mb-4 ">
 
-                    <h3 className="TextU pt-1">Department List</h3>
+                    <h3 className="TextU pt-1">Category List</h3>
                     <Button className="shadow" style={{ marginRight: "30px", backgroundColor: '#233EAE', height: "37px", width: "135px", borderRadius: "50px" }}
                         onClick={handleBuka}> ADD NEW   +</Button>
                     <input className="text-center shadow"

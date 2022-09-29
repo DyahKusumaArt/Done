@@ -15,7 +15,6 @@ const customStyles = {
             fontStyle: "normal",
             fontWeight: "400",
             lineHeight: "150%",
-            textTransform: "capitalize"
         },
         input: {
             style: {
@@ -30,8 +29,6 @@ const customStyles = {
             color: "black !important",
             borderTopStyle: 'outset',
             borderTopWidth: '1px',
-
-            textTransform: 'capitalize'
         },
     },
 
@@ -64,26 +61,25 @@ export const Mstaff = () => {
             center: true,
         },
         {
-            name: "phone number",
+            name: "Phone Number",
             selector: row => row.phone,
             sortable: true,
             center: true,
         },
         {
-            name: "department",
-            selector: row => (dataDe.filter(item => item.id == row.department_id)).map((item) => item.name),
+            name: "Department",
+            selector:  row => (dataDe.filter(item =>item.id == row.department_id)).map((item) => item.name),
             sortable: true,
             center: true,
 
             style: {
                 borderRadius: '25px',
                 margin: '7px 5px 7px 5px',
-                backgroundColor: '#DC3545',
                 color: 'white',
             },
         },
         {
-            name: "edit",
+            name: "Action",
             center: true,
             cell: row => (
                 <div>
@@ -143,7 +139,7 @@ export const Mstaff = () => {
             })
     };
     const getUser = async () => {
-        axios.get("http://localhost:3000/users", { withCredentials: 'true' })
+        axios.get("http://localhost:3000/users-employee", { withCredentials: 'true' })
             .then((response) => {
                 setUser(response.data);
             });
@@ -151,10 +147,10 @@ export const Mstaff = () => {
     const filteredID = user.filter(
         item => item && item.id == user_id,
     );
-    
+
     const employeeMap = data.map((item) => item.user_id)
     const studentMap = student.map((item) => item.user_id)
-    const userNew = user.filter(({id})=> !employeeMap.includes(id) && !studentMap.includes(id))
+    const userNew = user.filter(({ id }) => !employeeMap.includes(id) && !studentMap.includes(id))
 
     //add employee
     const [id, setId] = useState("");
@@ -201,6 +197,8 @@ export const Mstaff = () => {
         delState();
         setTampil(false);
     }
+
+    
     const handleEdit = (id) => {
         axios.get("http://localhost:3000/employee/" + id, { withCredentials: 'true' })
             .then((response) => {
@@ -216,8 +214,6 @@ export const Mstaff = () => {
     };
     const updateProduct = async (id) => {
         axios.patch("http://localhost:3000/employee/" + id, {
-            id: id,
-            user_id: user_id,
             name_employee: name_employee,
             address: address,
             gender: gender,
@@ -226,16 +222,21 @@ export const Mstaff = () => {
         }, { withCredentials: true })
             .then(
                 () => {
-                    delState();
+                    axios.patch("http://localhost:3000/users-edit/" + user_id, {
+                        full_name: name_employee,
+                        phone: phone,
+                    }, { withCredentials: true })
                 }
             ).catch((error) => {
                 setError(error.response.data.msg);
-            });
+            })
     }
     const handleTutup = () => {
         setBuka(false);
         delState('')
     }
+
+    
     //open modal add
     const handleBuka = () => setBuka(true);
     const [senin, setSenin] = React.useState("");
@@ -334,6 +335,7 @@ export const Mstaff = () => {
                 }
             )
     }
+    
     const editKamis = () => {
         axios.patch("http://localhost:3000/employee-schedules/" + idKamis, {
             id: idKamis,
@@ -429,189 +431,218 @@ export const Mstaff = () => {
             end_break: endSenin
         }, { withCredentials: 'true' })
             .then(() => {
-                console.log('mau');
+                axios.post("http://localhost:3000/employee-schedules", {
+                    employee_id: emplyeId,
+                    day: 'Selasa',
+                    start_time: selasa,
+                    end_time: aselasa,
+                    start_break: isSelasa,
+                    end_break: endSelasa
+                }, { withCredentials: 'true' })
+                    .then(() => {
+                        axios.post("http://localhost:3000/employee-schedules", {
+                            employee_id: emplyeId,
+                            day: 'Rabu',
+                            start_time: rabu,
+                            end_time: arabu,
+                            start_break: isRabu,
+                            end_break: endRabu
+                        }, { withCredentials: 'true' })
+                            .then(() => {
+                                axios.post("http://localhost:3000/employee-schedules", {
+                                    employee_id: emplyeId,
+                                    day: 'Kamis',
+                                    start_time: kamis,
+                                    end_time: akamis,
+                                    start_break: isKamis,
+                                    end_break: endKamis
+                                }, { withCredentials: 'true' })
+                                    .then(() => {
+                                        axios.post("http://localhost:3000/employee-schedules", {
+                                            employee_id: emplyeId,
+                                            day: 'Jumat',
+                                            start_time: jumat,
+                                            end_time: ajumat,
+                                            start_break: isJumat,
+                                            end_break: endJumat
+                                        }, { withCredentials: 'true' })
+                                            .then(() => {
+                                                axios.post("http://localhost:3000/employee-schedules", {
+                                                    employee_id: emplyeId,
+                                                    day: 'Sabtu',
+                                                    start_time: sabtu,
+                                                    end_time: asabtu,
+                                                    start_break: isSabtu,
+                                                    end_break: endSabtu
+                                                }, { withCredentials: 'true' })
+                                                    .then(() => {
+                                                        axios.post("http://localhost:3000/employee-schedules", {
+                                                            employee_id: emplyeId,
+                                                            day: 'Minggu',
+                                                            start_time: minggu,
+                                                            end_time: aminggu,
+                                                            start_break: isMinggu,
+                                                            end_break: endMinggu
+                                                        }, { withCredentials: 'true' })
+                                                            .then(() => {
+                                                                console.log('mau');
+                                                            })
+                                                            .catch((error) => {
+                                                                console.log(error);
+                                                            })
+                                                    })
+                                                    .catch((error) => {
+                                                        console.log(error);
+                                                    })
+                                            })
+                                            .catch((error) => {
+                                                console.log(error);
+                                            })
+                                    })
+                                    .catch((error) => {
+                                        console.log(error);
+                                    })
+                            })
+                            .catch((error) => {
+                                console.log(error);
+                            })
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    })
             })
             .catch((error) => {
                 console.log(error);
             })
     };
-    const addSelasa = async (id) => {
-        axios.post("http://localhost:3000/employee-schedules", {
-            employee_id: emplyeId,
-            day: 'Selasa',
-            start_time: selasa,
-            end_time: aselasa,
-            start_break: isSelasa,
-            end_break: endSelasa
-        }, { withCredentials: 'true' })
-            .then(() => {
-                console.log('mau');
-            })
-            .catch((error) => {
-                console.log(error);
-            })
-    };
-    const addRabu = async (id) => {
-        axios.post("http://localhost:3000/employee-schedules", {
-            employee_id: emplyeId,
-            day: 'Rabu',
-            start_time: rabu,
-            end_time: arabu,
-            start_break: isRabu,
-            end_break: endRabu
-        }, { withCredentials: 'true' })
-            .then(() => {
-                console.log('mau');
-            })
-            .catch((error) => {
-                console.log(error);
-            })
-    };
-    const addKamis = async (id) => {
-        axios.post("http://localhost:3000/employee-schedules", {
-            employee_id: emplyeId,
-            day: 'Kamis',
-            start_time: kamis,
-            end_time: akamis,
-            start_break: isKamis,
-            end_break: endKamis
-        }, { withCredentials: 'true' })
-            .then(() => {
-                console.log('mau');
-            })
-            .catch((error) => {
-                console.log(error);
-            })
-    };
-    const addJumat = async (id) => {
-        axios.post("http://localhost:3000/employee-schedules", {
-            employee_id: emplyeId,
-            day: 'Jumat',
-            start_time: jumat,
-            end_time: ajumat,
-            start_break: isJumat,
-            end_break: endJumat
-        }, { withCredentials: 'true' })
-            .then(() => {
-                console.log('mau');
-            })
-            .catch((error) => {
-                console.log(error);
-            })
-    };
-    const addSabtu = async (id) => {
-        axios.post("http://localhost:3000/employee-schedules", {
-            employee_id: emplyeId,
-            day: 'Sabtu',
-            start_time: sabtu,
-            end_time: asabtu,
-            start_break: isSabtu,
-            end_break: endSabtu
-        }, { withCredentials: 'true' })
-            .then(() => {
-                console.log('mau');
-            })
-            .catch((error) => {
-                console.log(error);
-            })
-    };
-    const addMinggu = async (id) => {
-        axios.post("http://localhost:3000/employee-schedules", {
-            employee_id: emplyeId,
-            day: 'Minggu',
-            start_time: minggu,
-            end_time: aminggu,
-            start_break: isMinggu,
-            end_break: endMinggu
-        }, { withCredentials: 'true' })
-            .then(() => {
-                console.log('mau');
-            })
-            .catch((error) => {
-                console.log(error);
-            })
-    };
+   
     const addJadwal = (id) => {
         addSenin(id);
-        addSelasa(id);
-        addRabu(id);
-        addKamis(id);
-        addJumat(id);
-        addSabtu(id);
-        addMinggu(id);
     };
 
     //modal jadwal
+    const hardReset = () => {
+        setSenin("00:00:00");
+        setaSenin("00:00:00");
+        setSelasa("00:00:00");
+        setaSelasa("00:00:00");
+        setRabu("00:00:00");
+        setaRabu("00:00:00");
+        setKamis("00:00:00");
+        setaKamis("00:00:00");
+        setJumat("00:00:00");
+        setaJumat("00:00:00");
+        setSabtu("00:00:00");
+        setaSabtu("00:00:00");
+        setMinggu("00:00:00");
+        setaMinggu("00:00:00");
+        setIssenin("00:00:00");
+        setEndsenin("00:00:00");
+        setIsselasa("00:00:00");
+        setEndselasa("00:00:00");
+        setIsrabu("00:00:00");
+        setEndrabu("00:00:00");
+        setIskamis("00:00:00");
+        setEndkamis("00:00:00");
+        setIsjumat("00:00:00");
+        setEndjumat("00:00:00");
+        setIssabtu("00:00:00");
+        setEndsabtu("00:00:00");
+        setIsminggu("00:00:00");
+        setEndminggu("00:00:00");
+    }
 
     const [editJ, setEditj] = useState(false);
-    const handleEditT = () => setEditj(false);
+    const handleEditT = () => {
+        canceling();
+        setEditj(false);}
 
     const [show, setShow] = useState(false);
-    const handleClose = () => setShow(false);
+    const handleClose = () =>{ 
+        canceling();
+        setShow(false);
+    }
+    const canceling = ()=>{
+        setSenin("");
+        setaSenin("");
+        setSelasa("");
+        setaSelasa("");
+        setRabu("");
+        setaRabu("");
+        setKamis("");
+        setaKamis("");
+        setJumat("");
+        setaJumat("");
+        setSabtu("");
+        setaSabtu("");
+        setMinggu("");
+        setaMinggu("");
+        setIssenin("");
+        setEndsenin("");
+        setIsselasa("");
+        setEndselasa("");
+        setIsrabu("");
+        setEndrabu("");
+        setIskamis("");
+        setEndkamis("");
+        setIsjumat("");
+        setEndjumat("");
+        setIssabtu("");
+        setEndsabtu("");
+        setIsminggu("");
+        setEndminggu("");
+    }
 
     const handleShow = (id) => {
-        axios.get("http://localhost:3000/employee-schedulesbysenin/" + id, { withCredentials: 'true' })
-            .then((response) => {
-                setSenin(response.data.start_time);
-                setIdsenin(response.data.id);
-                setIssenin(response.data.start_break);
-                setEndsenin(response.data.end_break);
-                setaSenin(response.data.end_time);
-            }).catch((error) => {
-                setShow(true)
-                setAddId(id);
-            });
-        axios.get("http://localhost:3000/employee-schedulesbyselasa/" + id, { withCredentials: 'true' })
-            .then((response) => {
-                setSelasa(response.data.start_time);
-                setIdselasa(response.data.id);
-                setIsselasa(response.data.start_break);
-                setEndselasa(response.data.end_break);
-                setaSelasa(response.data.end_time);
-            });
-        axios.get("http://localhost:3000/employee-schedulesbyrabu/" + id, { withCredentials: 'true' })
-            .then((response) => {
-                setRabu(response.data.start_time);
-                setaRabu(response.data.end_time);
-                setIdRabu(response.data.id);
-                setIsrabu(response.data.start_break);
-                setEndrabu(response.data.end_break);
-            });
-        axios.get("http://localhost:3000/employee-schedulesbykamis/" + id, { withCredentials: 'true' })
-            .then((response) => {
-                setKamis(response.data.start_time);
-                setaKamis(response.data.end_time);
-                setIdkamis(response.data.id);
-                setIskamis(response.data.start_break);
-                setEndkamis(response.data.end_break);
-            });
-        axios.get("http://localhost:3000/employee-schedulesbyjumat/" + id, { withCredentials: 'true' })
-            .then((response) => {
-                setJumat(response.data.start_time);
-                setaJumat(response.data.end_time);
-                setIdjumat(response.data.id);
-                setIsjumat(response.data.start_break);
-                setEndjumat(response.data.end_break);
-            });
-        axios.get("http://localhost:3000/employee-schedulesbysabtu/" + id, { withCredentials: 'true' })
-            .then((response) => {
-                setSabtu(response.data.start_time);
-                setaSabtu(response.data.end_time);
-                setIdsabtu(response.data.id);
-                setIssabtu(response.data.start_break);
-                setEndsabtu(response.data.end_break);
-            });
-        axios.get("http://localhost:3000/employee-schedulesbyminggu/" + id, { withCredentials: 'true' })
-            .then((response) => {
-                if (response.data !== null) {
-                    setMinggu(response.data.end_time);
-                    setIdminggu(response.data.id);
-                    setaMinggu(response.data.end_time);
-                    setIsminggu(response.data.start_break);
-                    setEndminggu(response.data.end_break);
-                    setEditj(true);
-                }
-            })
+        axios.get("http://localhost:3000/employee/" + id, { withCredentials: 'true' })
+        .then((response) => {
+            setNameEmployee(response.data.name_employee);
+            setDepartment(response.data.department_id);
+        });
+        axios.get("http://localhost:3000/employee-schedulesbyemployee/" + id, { withCredentials: 'true' })
+        .then((response) => {
+            if (response.data !== null) {
+                setSenin(response.data[0].start_time);
+                setIdsenin(response.data[0].id);
+                setIssenin(response.data[0].start_break);
+                setEndsenin(response.data[0].end_break);
+                setaSenin(response.data[0].end_time);
+                setSelasa(response.data[1].start_time);
+                setIdselasa(response.data[1].id);
+                setIsselasa(response.data[1].start_break);
+                setEndselasa(response.data[1].end_break);
+                setaSelasa(response.data[1].end_time);
+                setRabu(response.data[2].start_time);
+                setaRabu(response.data[2].end_time);
+                setIdRabu(response.data[2].id);
+                setIsrabu(response.data[2].start_break);
+                setEndrabu(response.data[2].end_break);
+                setKamis(response.data[3].start_time);
+                setaKamis(response.data[3].end_time);
+                setIdkamis(response.data[3].id);
+                setIskamis(response.data[3].start_break);
+                setEndkamis(response.data[3].end_break);
+                setJumat(response.data[4].start_time);
+                setaJumat(response.data[4].end_time);
+                setIdjumat(response.data[4].id);
+                setIsjumat(response.data[4].start_break);
+                setEndjumat(response.data[4].end_break);
+                setSabtu(response.data[5].start_time);
+                setaSabtu(response.data[5].end_time);
+                setIdsabtu(response.data[5].id);
+                setIssabtu(response.data[5].start_break);
+                setEndsabtu(response.data[5].end_break);
+                setMinggu(response.data[6].end_time);
+                setIdminggu(response.data[6].id);
+                setaMinggu(response.data[6].end_time);
+                setIsminggu(response.data[6].start_break);
+                setEndminggu(response.data[6].end_break);
+                setEditj(true);
+            }
+        }).catch((error) => {
+            setShow(true)
+            setAddId(id);
+        });
     }
     return (
         <>
@@ -678,7 +709,7 @@ export const Mstaff = () => {
                                                         </Form.Group>
                                                     </Col>
                                                 </Row>
-                                                <Row>-
+                                                <Row>
                                                     <Col>
                                                         <Form.Label>Select Gender</Form.Label>
                                                         <Form.Select aria-label="Default select example" required onChange={(e) => setGender(e.target.value)}>
@@ -712,8 +743,11 @@ export const Mstaff = () => {
 
                                                     </Col>
                                                 </Row>
-                                                <Row className="mx-auto">
-                                                    <Button variant="success" type="submit" >
+                                                <Row className="mx-auto d-flex justify-content-between">
+                                                    <Button variant="danger" onClick={() => handleTutup()} className="w-45">
+                                                        Cancel
+                                                    </Button>
+                                                    <Button variant="success" type="submit" className="w-45" >
                                                         Save
                                                     </Button>
                                                 </Row>
@@ -789,8 +823,11 @@ export const Mstaff = () => {
                                         </Col>
                                     </Row>
 
-                                    <Row className="mx-auto">
-                                        <Button variant="success" type="submit" >
+                                    <Row className="mx-auto d-flex justify-content-between">
+                                        <Button variant="danger" onClick={() => handleTtp()} className="w-45">
+                                            Cancel
+                                        </Button>
+                                        <Button variant="success" type="submit" className="w-45" >
                                             Save
                                         </Button>
                                     </Row>
@@ -806,393 +843,23 @@ export const Mstaff = () => {
                             size="lg"
                             centered
                         >
-                            <Modal.Header className="header-schedule" closeButton style={{ backgroundColor: '#F2AD00' }}>
+                            <Modal.Header className="header-schedule"  style={{ backgroundColor: '#F2AD00' }}>
                                 <div className="d-flex justify-content-between">
                                     <div>
                                         <h4 className="mb-3">Add Jadwal Employee</h4>
                                         <div className="nama d-flex flex-column">
-                                            <div className="fw-bold h2 mb-0 mx-auto">YUNI</div>
-                                            <div className="rounded-5 title-edit my-auto">Backend Developer</div>
+                                            <div className="fw-bold h2 mb-0 mx-auto">{name_employee}</div>
+                                            <div className="rounded-5 title-edit my-auto">{(dataDe.filter(item => item.id == department)).map((item) => item.name)}</div>
                                         </div>
                                     </div>
                                 </div>
                             </Modal.Header>
                             <Modal.Body className="Mbody">
                                 <Form onSubmit={() => addJadwal(id)}>
-                                    <div className="d-flex ">
+                                <div className="d-flex ">
                                         <div className="d-flex rowJam">
                                             <div className="hari my-auto">
-                                                Senin
-                                            </div>
-                                            <input type="time"
-                                                className="inputJam mx-3 rounded-3 my-auto"
-                                                id="time"
-                                                required
-                                                placeholder="Time"
-                                                onChange={(e) => setSenin(e.target.value)}
-                                            />
-                                            <div className="my-auto">
-                                                -
-                                            </div>
-                                            <input type="time"
-                                                className="inputJam mx-3 rounded-3 my-auto"
-                                                id="time"
-                                                placeholder="Time"
-                                                required
-                                                onChange={(e) => setaSenin(e.target.value)}
-                                            />
-                                            <div className="istirahat my-auto">
-                                                Istirahat
-                                            </div>
-                                            <div className="d-flex mx-3">
-                                                <input type="time"
-                                                    className="rounded-3 my-auto"
-                                                    placeholder="Time"
-                                                    required
-                                                    onChange={(e) => setIssenin(e.target.value)}
-                                                    id="startTime" />
-                                            </div>
-                                            <div className="my-auto">
-                                                -
-                                            </div>
-                                            <div className="d-flex mx-3">
-                                                <input type="time"
-                                                    className="inputJam mx-1 rounded-3 my-auto"
-                                                    onChange={(e) => setEndsenin(e.target.value)}
-                                                    placeholder="Time"
-                                                    required
-                                                    id="endTime" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="d-flex ">
-                                        <div className="d-flex rowJam">
-                                            <div className="hari my-auto">
-                                                Selasa
-                                            </div>
-                                            <input type="time"
-                                                className="inputJam mx-3 rounded-3 my-auto"
-                                                id="time"
-                                                placeholder="Time"
-                                                onChange={(e) => setSelasa(e.target.value)}
-                                                required
-                                            />
-                                            <div className="my-auto">
-                                                -
-                                            </div>
-                                            <input type="time"
-                                                className="inputJam mx-3 rounded-3 my-auto"
-                                                id="time"
-                                                placeholder="Time"
-                                                required
-                                                onChange={(e) => setaSelasa(e.target.value)}
-                                            />
-                                            <div className="istirahat my-auto">
-                                                Istirahat
-                                            </div>
-                                            <div className="d-flex mx-3">
-                                                <input type="time"
-                                                    className="rounded-3 my-auto"
-                                                    placeholder="Time"
-                                                    required
-                                                    onChange={(e) => setIsselasa(e.target.value)}
-                                                    id="startTime" />
-                                            </div>
-                                            <div className="my-auto">
-                                                -
-                                            </div>
-                                            <div className="d-flex mx-3">
-                                                <input type="time"
-                                                    required
-                                                    className="inputJam mx-1 rounded-3 my-auto"
-                                                    onChange={(e) => setEndselasa(e.target.value)}
-                                                    placeholder="Time"
-                                                    id="endTime" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="d-flex ">
-                                        <div className="d-flex rowJam">
-                                            <div className="hari my-auto">
-                                                Rabu
-                                            </div>
-                                            <input type="time"
-                                                className="inputJam mx-3 rounded-3 my-auto"
-                                                id="time"
-                                                placeholder="Time"
-                                                onChange={(e) => setRabu(e.target.value)}
-                                                required
-                                            />
-                                            <div className="my-auto">
-                                                -
-                                            </div>
-                                            <input type="time"
-                                                required
-                                                className="inputJam mx-3 rounded-3 my-auto"
-                                                id="time"
-                                                placeholder="Time"
-                                                onChange={(e) => setaRabu(e.target.value)}
-                                            />
-                                            <div className="istirahat my-auto">
-                                                Istirahat
-                                            </div>
-                                            <div className="d-flex mx-3">
-                                                <input type="time"
-                                                    required
-                                                    className="rounded-3 my-auto"
-                                                    placeholder="Time"
-                                                    onChange={(e) => setIsrabu(e.target.value)}
-                                                    id="startTime" />
-                                            </div>
-                                            <div className="my-auto">
-                                                -
-                                            </div>
-                                            <div className="d-flex mx-3">
-                                                <input type="time"
-                                                    required
-                                                    className="inputJam mx-1 rounded-3 my-auto"
-                                                    onChange={(e) => setEndrabu(e.target.value)}
-                                                    placeholder="Time"
-                                                    id="endTime" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="d-flex ">
-                                        <div className="d-flex rowJam">
-                                            <div className="hari my-auto">
-                                                Kamis
-                                            </div>
-                                            <input type="time"
-                                                className="inputJam mx-3 rounded-3 my-auto"
-                                                id="time"
-                                                placeholder="Time"
-                                                onChange={(e) => setKamis(e.target.value)}
-                                                required
-                                            />
-                                            <div className="my-auto">
-                                                -
-                                            </div>
-                                            <input type="time"
-                                                required
-                                                className="inputJam mx-3 rounded-3 my-auto"
-                                                id="time"
-                                                placeholder="Time"
-                                                onChange={(e) => setaKamis(e.target.value)}
-                                            />
-                                            <div className="istirahat my-auto">
-                                                Istirahat
-                                            </div>
-                                            <div className="d-flex mx-3">
-                                                <input type="time"
-                                                    required
-                                                    className="rounded-3 my-auto"
-                                                    placeholder="Time"
-                                                    onChange={(e) => setIskamis(e.target.value)}
-                                                    id="startTime" />
-                                            </div>
-                                            <div className="my-auto">
-                                                -
-                                            </div>
-                                            <div className="d-flex mx-3">
-                                                <input type="time"
-                                                    required
-                                                    className="inputJam mx-1 rounded-3 my-auto"
-                                                    onChange={(e) => setEndkamis(e.target.value)}
-                                                    placeholder="Time"
-                                                    id="endTime" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="d-flex ">
-                                        <div className="d-flex rowJam">
-                                            <div className="hari my-auto">
-                                                Jumat
-                                            </div>
-                                            <input type="time"
-                                                className="inputJam mx-3 rounded-3 my-auto"
-                                                id="time"
-                                                placeholder="Time"
-                                                onChange={(e) => setJumat(e.target.value)}
-                                                required
-                                            />
-                                            <div className="my-auto">
-                                                -
-                                            </div>
-                                            <input type="time"
-                                                className="inputJam mx-3 rounded-3 my-auto"
-                                                id="time"
-                                                required
-                                                placeholder="Time"
-                                                onChange={(e) => setaJumat(e.target.value)}
-                                            />
-                                            <div className="istirahat my-auto">
-                                                Istirahat
-                                            </div>
-                                            <div className="d-flex mx-3">
-                                                <input type="time"
-                                                    className="rounded-3 my-auto"
-                                                    placeholder="Time"
-                                                    required
-                                                    onChange={(e) => setIsjumat(e.target.value)}
-                                                    id="startTime" />
-                                            </div>
-                                            <div className="my-auto">
-                                                -
-                                            </div>
-                                            <div className="d-flex mx-3">
-                                                <input type="time"
-                                                    required
-                                                    className="inputJam mx-1 rounded-3 my-auto"
-                                                    onChange={(e) => setEndjumat(e.target.value)}
-                                                    placeholder="Time"
-                                                    id="endTime" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="d-flex ">
-                                        <div className="d-flex rowJam">
-                                            <div className="hari my-auto">
-                                                Sabtu
-                                            </div>
-                                            <input type="time"
-                                                className="inputJam mx-3 rounded-3 my-auto"
-                                                id="time"
-                                                placeholder="Time"
-                                                onChange={(e) => setSabtu(e.target.value)}
-                                                required
-                                            />
-                                            <div className="my-auto">
-                                                -
-                                            </div>
-                                            <input type="time"
-                                                className="inputJam mx-3 rounded-3 my-auto"
-                                                id="time"
-                                                required
-                                                placeholder="Time"
-                                                onChange={(e) => setaSabtu(e.target.value)}
-                                            />
-                                            <div className="istirahat my-auto">
-                                                Istirahat
-                                            </div>
-                                            <div className="d-flex mx-3">
-                                                <input type="time"
-                                                    className="rounded-3 my-auto"
-                                                    placeholder="Time"
-                                                    required
-                                                    onChange={(e) => setIssabtu(e.target.value)}
-                                                    id="startTime" />
-                                            </div>
-                                            <div className="my-auto">
-                                                -
-                                            </div>
-                                            <div className="d-flex mx-3">
-                                                <input type="time"
-                                                    required
-                                                    className="inputJam mx-1 rounded-3 my-auto"
-                                                    onChange={(e) => setEndsabtu(e.target.value)}
-                                                    placeholder="Time"
-                                                    id="endTime" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="d-flex mb-3">
-                                        <div className="d-flex rowJam">
-                                            <div className="hari my-auto">
-                                                Minggu
-                                            </div>
-                                            <input type="time"
-                                                className="inputJam mx-3 rounded-3 my-auto"
-                                                id="time"
-                                                placeholder="Time"
-                                                onChange={(e) => setMinggu(e.target.value)}
-                                                required
-                                            />
-                                            <div className="my-auto">
-                                                -
-                                            </div>
-                                            <input type="time"
-                                                required
-                                                className="inputJam mx-3 rounded-3 my-auto"
-                                                id="time"
-                                                placeholder="Time"
-                                                onChange={(e) => setaMinggu(e.target.value)}
-                                            />
-                                            <div className="istirahat my-auto">
-                                                Istirahat
-                                            </div>
-                                            <div className="d-flex mx-3">
-                                                <input type="time"
-                                                    required
-                                                    className="rounded-3 my-auto"
-                                                    placeholder="Time"
-                                                    onChange={(e) => setIsminggu(e.target.value)}
-                                                    id="startTime" />
-                                            </div>
-                                            <div className="my-auto">
-                                                -
-                                            </div>
-                                            <div className="d-flex mx-3">
-                                                <input type="time"
-                                                    required
-                                                    className="inputJam mx-1 rounded-3 my-auto"
-                                                    onChange={(e) => setEndminggu(e.target.value)}
-                                                    placeholder="Time"
-                                                    id="endTime" />
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div className="d-flex flex-row justify-content-between">
-                                        <div>
-                                            <Button variant="danger w-100">
-                                                Reset
-                                            </Button>
-                                        </div>
-
-                                        <div className="d-flex flex-row justify-content-between">
-                                            <div className="mx-3">
-                                                <Button variant="secondary w-100">
-                                                    Back
-                                                </Button>
-                                            </div>
-                                            <div className="mx-2">
-                                                <Button variant="success w-100" type="submit">
-                                                    Save
-                                                </Button>
-                                            </div>
-
-                                        </div>
-                                    </div>
-
-                                </Form>
-                            </Modal.Body>
-                        </Modal >
-
-                        <Modal
-                            show={editJ}
-                            onHide={handleEditT}
-                            backdrop="static"
-                            keyboard={false}
-                            size="lg"
-                            centered
-                        >
-                            <Modal.Header className="header-schedule" closeButton style={{ backgroundColor: '#F2AD00' }}>
-                                <div className="d-flex justify-content-between">
-                                    <div>
-                                        <h4 className="mb-3">Edit Jadwal Employee</h4>
-                                        <div className="nama d-flex flex-column">
-                                            <div className="fw-bold h2 mb-0 mx-auto">YUNI</div>
-                                            <div className="rounded-5 title-edit my-auto">Backend Developer</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </Modal.Header>
-                            <Modal.Body className="Mbody">
-                                <Form onSubmit={() => editJadwal()}>
-                                    <div className="d-flex ">
-                                        <div className="d-flex rowJam">
-                                            <div className="hari my-auto">
-                                                Senin
+                                                Monday
                                             </div>
                                             <input type="time"
                                                 className="inputJam mx-3 rounded-3 my-auto"
@@ -1203,7 +870,7 @@ export const Mstaff = () => {
                                                 required
                                             />
                                             <div className="my-auto">
-                                                -
+                                                Until
                                             </div>
                                             <input type="time"
                                                 className="inputJam mx-3 rounded-3 my-auto"
@@ -1214,7 +881,7 @@ export const Mstaff = () => {
                                                 onChange={(e) => setaSenin(e.target.value)}
                                             />
                                             <div className="istirahat my-auto">
-                                                Istirahat
+                                                timebreak
                                             </div>
                                             <div className="d-flex mx-3">
                                                 <input type="time"
@@ -1242,7 +909,7 @@ export const Mstaff = () => {
                                     <div className="d-flex ">
                                         <div className="d-flex rowJam">
                                             <div className="hari my-auto">
-                                                Selasa
+                                                Tuesday
                                             </div>
                                             <input type="time"
                                                 className="inputJam mx-3 rounded-3 my-auto"
@@ -1253,7 +920,7 @@ export const Mstaff = () => {
                                                 required
                                             />
                                             <div className="my-auto">
-                                                -
+                                                Until
                                             </div>
                                             <input type="time"
                                                 className="inputJam mx-3 rounded-3 my-auto"
@@ -1264,7 +931,7 @@ export const Mstaff = () => {
                                                 required
                                             />
                                             <div className="istirahat my-auto">
-                                                Istirahat
+                                                timebreak
                                             </div>
                                             <div className="d-flex mx-3">
                                                 <input type="time"
@@ -1292,7 +959,7 @@ export const Mstaff = () => {
                                     <div className="d-flex ">
                                         <div className="d-flex rowJam">
                                             <div className="hari my-auto">
-                                                Rabu
+                                                Wednesday
                                             </div>
                                             <input type="time"
                                                 className="inputJam mx-3 rounded-3 my-auto"
@@ -1303,7 +970,7 @@ export const Mstaff = () => {
                                                 required
                                             />
                                             <div className="my-auto">
-                                                -
+                                                Until
                                             </div>
                                             <input type="time"
                                                 className="inputJam mx-3 rounded-3 my-auto"
@@ -1314,7 +981,7 @@ export const Mstaff = () => {
                                                 required
                                             />
                                             <div className="istirahat my-auto">
-                                                Istirahat
+                                                timebreak
                                             </div>
                                             <div className="d-flex mx-3">
                                                 <input type="time"
@@ -1342,7 +1009,7 @@ export const Mstaff = () => {
                                     <div className="d-flex ">
                                         <div className="d-flex rowJam">
                                             <div className="hari my-auto">
-                                                Kamis
+                                                Thursday
                                             </div>
                                             <input type="time"
                                                 className="inputJam mx-3 rounded-3 my-auto"
@@ -1353,7 +1020,7 @@ export const Mstaff = () => {
                                                 required
                                             />
                                             <div className="my-auto">
-                                                -
+                                                Until
                                             </div>
                                             <input type="time"
                                                 className="inputJam mx-3 rounded-3 my-auto"
@@ -1364,7 +1031,7 @@ export const Mstaff = () => {
                                                 onChange={(e) => setaKamis(e.target.value)}
                                             />
                                             <div className="istirahat my-auto">
-                                                Istirahat
+                                                timebreak
                                             </div>
                                             <div className="d-flex mx-3">
                                                 <input type="time"
@@ -1392,7 +1059,7 @@ export const Mstaff = () => {
                                     <div className="d-flex ">
                                         <div className="d-flex rowJam">
                                             <div className="hari my-auto">
-                                                Jumat
+                                                Friday
                                             </div>
                                             <input type="time"
                                                 className="inputJam mx-3 rounded-3 my-auto"
@@ -1403,7 +1070,7 @@ export const Mstaff = () => {
                                                 required
                                             />
                                             <div className="my-auto">
-                                                -
+                                                Until
                                             </div>
                                             <input type="time"
                                                 className="inputJam mx-3 rounded-3 my-auto"
@@ -1414,7 +1081,7 @@ export const Mstaff = () => {
                                                 onChange={(e) => setaJumat(e.target.value)}
                                             />
                                             <div className="istirahat my-auto">
-                                                Istirahat
+                                                timebreak
                                             </div>
                                             <div className="d-flex mx-3">
                                                 <input type="time"
@@ -1442,7 +1109,7 @@ export const Mstaff = () => {
                                     <div className="d-flex ">
                                         <div className="d-flex rowJam">
                                             <div className="hari my-auto">
-                                                Sabtu
+                                                Saturday
                                             </div>
                                             <input type="time"
                                                 className="inputJam mx-3 rounded-3 my-auto"
@@ -1453,7 +1120,7 @@ export const Mstaff = () => {
                                                 required
                                             />
                                             <div className="my-auto">
-                                                -
+                                                Until
                                             </div>
                                             <input type="time"
                                                 className="inputJam mx-3 rounded-3 my-auto"
@@ -1464,7 +1131,7 @@ export const Mstaff = () => {
                                                 onChange={(e) => setaSabtu(e.target.value)}
                                             />
                                             <div className="istirahat my-auto">
-                                                Istirahat
+                                                timebreak
                                             </div>
                                             <div className="d-flex mx-3">
                                                 <input type="time"
@@ -1492,7 +1159,7 @@ export const Mstaff = () => {
                                     <div className="d-flex mb-3">
                                         <div className="d-flex rowJam">
                                             <div className="hari my-auto">
-                                                Minggu
+                                                Sunday
                                             </div>
                                             <input type="time"
                                                 className="inputJam mx-3 rounded-3 my-auto"
@@ -1503,7 +1170,7 @@ export const Mstaff = () => {
                                                 required
                                             />
                                             <div className="my-auto">
-                                                -
+                                                Until
                                             </div>
                                             <input type="time"
                                                 className="inputJam mx-3 rounded-3 my-auto"
@@ -1514,7 +1181,406 @@ export const Mstaff = () => {
                                                 onChange={(e) => setaMinggu(e.target.value)}
                                             />
                                             <div className="istirahat my-auto">
-                                                Istirahat
+                                                timebreak
+                                            </div>
+                                            <div className="d-flex mx-3">
+                                                <input type="time"
+                                                    className="rounded-3 my-auto"
+                                                    required
+                                                    value={isMinggu}
+                                                    placeholder="Time"
+                                                    onChange={(e) => setIsminggu(e.target.value)}
+                                                    id="startTime" />
+                                            </div>
+                                            <div className="my-auto">
+                                                -
+                                            </div>
+                                            <div className="d-flex mx-3">
+                                                <input type="time"
+                                                    className="inputJam mx-1 rounded-3 my-auto"
+                                                    value={endMinggu}
+                                                    onChange={(e) => setEndminggu(e.target.value)}
+                                                    placeholder="Time"
+                                                    required
+                                                    id="endTime" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div className="d-flex flex-row justify-content-between">
+                                        <div>
+                                            <Button variant="danger w-100" onClick={() => hardReset()}>
+                                                Reset
+                                            </Button>
+                                        </div>
+
+                                        <div className="d-flex flex-row justify-content-between">
+                                            <div className="mx-3">
+                                                <Button onClick={() => handleClose()} variant="secondary w-100">
+                                                    Back
+                                                </Button>
+                                            </div>
+                                            <div className="mx-2">
+                                                <Button variant="success w-100" type="submit">
+                                                    Save
+                                                </Button>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                </Form>
+                            </Modal.Body>
+                        </Modal >
+
+                        <Modal
+                            show={editJ}
+                            onHide={handleEditT}
+                            backdrop="static"
+                            keyboard={false}
+                            size="lg"
+                            centered
+                        >
+                            <Modal.Header className="header-schedule"  style={{ backgroundColor: '#F2AD00' }}>
+                                <div className="d-flex justify-content-between">
+                                    <div>
+                                        <h4 className="mb-3">Edit Jadwal Employee</h4>
+                                        <div className="nama d-flex flex-column">
+                                            <div className="fw-bold h2 mb-0 mx-auto">{name_employee}</div>
+                                            <div className="rounded-5 title-edit my-auto">{(dataDe.filter(item => item.id == department)).map((item) => item.name)}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </Modal.Header>
+                            <Modal.Body className="Mbody">
+                                <Form onSubmit={() => editJadwal()}>
+                                    <div className="d-flex ">
+                                        <div className="d-flex rowJam">
+                                            <div className="hari my-auto">
+                                                Monday
+                                            </div>
+                                            <input type="time"
+                                                className="inputJam mx-3 rounded-3 my-auto"
+                                                id="time"
+                                                value={senin}
+                                                placeholder="Time"
+                                                onChange={(e) => setSenin(e.target.value)}
+                                                required
+                                            />
+                                            <div className="my-auto">
+                                                Until
+                                            </div>
+                                            <input type="time"
+                                                className="inputJam mx-3 rounded-3 my-auto"
+                                                id="time"
+                                                value={aSenin}
+                                                required
+                                                placeholder="Time"
+                                                onChange={(e) => setaSenin(e.target.value)}
+                                            />
+                                            <div className="istirahat my-auto">
+                                                timebreak
+                                            </div>
+                                            <div className="d-flex mx-3">
+                                                <input type="time"
+                                                    className="rounded-3 my-auto"
+                                                    value={isSenin}
+                                                    required
+                                                    placeholder="Time"
+                                                    onChange={(e) => setIssenin(e.target.value)}
+                                                    id="startTime" />
+                                            </div>
+                                            <div className="my-auto">
+                                                -
+                                            </div>
+                                            <div className="d-flex mx-3">
+                                                <input type="time"
+                                                    className="inputJam mx-1 rounded-3 my-auto"
+                                                    value={endSenin}
+                                                    required
+                                                    onChange={(e) => setEndsenin(e.target.value)}
+                                                    placeholder="Time"
+                                                    id="endTime" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="d-flex ">
+                                        <div className="d-flex rowJam">
+                                            <div className="hari my-auto">
+                                                Tuesday
+                                            </div>
+                                            <input type="time"
+                                                className="inputJam mx-3 rounded-3 my-auto"
+                                                id="time"
+                                                value={selasa}
+                                                placeholder="Time"
+                                                onChange={(e) => setSelasa(e.target.value)}
+                                                required
+                                            />
+                                            <div className="my-auto">
+                                                Until
+                                            </div>
+                                            <input type="time"
+                                                className="inputJam mx-3 rounded-3 my-auto"
+                                                id="time"
+                                                value={aselasa}
+                                                placeholder="Time"
+                                                onChange={(e) => setaSelasa(e.target.value)}
+                                                required
+                                            />
+                                            <div className="istirahat my-auto">
+                                                timebreak
+                                            </div>
+                                            <div className="d-flex mx-3">
+                                                <input type="time"
+                                                    className="rounded-3 my-auto"
+                                                    required
+                                                    value={isSelasa}
+                                                    placeholder="Time"
+                                                    onChange={(e) => setIsselasa(e.target.value)}
+                                                    id="startTime" />
+                                            </div>
+                                            <div className="my-auto">
+                                                -
+                                            </div>
+                                            <div className="d-flex mx-3">
+                                                <input type="time"
+                                                    className="inputJam mx-1 rounded-3 my-auto"
+                                                    required
+                                                    value={endSelasa}
+                                                    onChange={(e) => setEndselasa(e.target.value)}
+                                                    placeholder="Time"
+                                                    id="endTime" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="d-flex ">
+                                        <div className="d-flex rowJam">
+                                            <div className="hari my-auto">
+                                                Wednesday
+                                            </div>
+                                            <input type="time"
+                                                className="inputJam mx-3 rounded-3 my-auto"
+                                                id="time"
+                                                value={rabu}
+                                                placeholder="Time"
+                                                onChange={(e) => setRabu(e.target.value)}
+                                                required
+                                            />
+                                            <div className="my-auto">
+                                                Until
+                                            </div>
+                                            <input type="time"
+                                                className="inputJam mx-3 rounded-3 my-auto"
+                                                id="time"
+                                                value={arabu}
+                                                placeholder="Time"
+                                                onChange={(e) => setaRabu(e.target.value)}
+                                                required
+                                            />
+                                            <div className="istirahat my-auto">
+                                                timebreak
+                                            </div>
+                                            <div className="d-flex mx-3">
+                                                <input type="time"
+                                                    className="rounded-3 my-auto"
+                                                    value={isRabu}
+                                                    placeholder="Time"
+                                                    required
+                                                    onChange={(e) => setIsrabu(e.target.value)}
+                                                    id="startTime" />
+                                            </div>
+                                            <div className="my-auto">
+                                                -
+                                            </div>
+                                            <div className="d-flex mx-3">
+                                                <input type="time"
+                                                    className="inputJam mx-1 rounded-3 my-auto"
+                                                    value={endRabu}
+                                                    onChange={(e) => setEndrabu(e.target.value)}
+                                                    placeholder="Time"
+                                                    required
+                                                    id="endTime" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="d-flex ">
+                                        <div className="d-flex rowJam">
+                                            <div className="hari my-auto">
+                                                Thursday
+                                            </div>
+                                            <input type="time"
+                                                className="inputJam mx-3 rounded-3 my-auto"
+                                                id="time"
+                                                value={kamis}
+                                                placeholder="Time"
+                                                onChange={(e) => setKamis(e.target.value)}
+                                                required
+                                            />
+                                            <div className="my-auto">
+                                                Until
+                                            </div>
+                                            <input type="time"
+                                                className="inputJam mx-3 rounded-3 my-auto"
+                                                id="time"
+                                                value={akamis}
+                                                placeholder="Time"
+                                                required
+                                                onChange={(e) => setaKamis(e.target.value)}
+                                            />
+                                            <div className="istirahat my-auto">
+                                                timebreak
+                                            </div>
+                                            <div className="d-flex mx-3">
+                                                <input type="time"
+                                                    className="rounded-3 my-auto"
+                                                    value={isKamis}
+                                                    placeholder="Time"
+                                                    onChange={(e) => setIskamis(e.target.value)}
+                                                    required
+                                                    id="startTime" />
+                                            </div>
+                                            <div className="my-auto">
+                                                -
+                                            </div>
+                                            <div className="d-flex mx-3">
+                                                <input type="time"
+                                                    className="inputJam mx-1 rounded-3 my-auto"
+                                                    value={endKamis}
+                                                    onChange={(e) => setEndkamis(e.target.value)}
+                                                    placeholder="Time"
+                                                    required
+                                                    id="endTime" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="d-flex ">
+                                        <div className="d-flex rowJam">
+                                            <div className="hari my-auto">
+                                                Friday
+                                            </div>
+                                            <input type="time"
+                                                className="inputJam mx-3 rounded-3 my-auto"
+                                                id="time"
+                                                value={jumat}
+                                                placeholder="Time"
+                                                onChange={(e) => setJumat(e.target.value)}
+                                                required
+                                            />
+                                            <div className="my-auto">
+                                                Until
+                                            </div>
+                                            <input type="time"
+                                                className="inputJam mx-3 rounded-3 my-auto"
+                                                id="time"
+                                                value={ajumat}
+                                                placeholder="Time"
+                                                required
+                                                onChange={(e) => setaJumat(e.target.value)}
+                                            />
+                                            <div className="istirahat my-auto">
+                                                timebreak
+                                            </div>
+                                            <div className="d-flex mx-3">
+                                                <input type="time"
+                                                    className="rounded-3 my-auto"
+                                                    value={isJumat}
+                                                    required
+                                                    placeholder="Time"
+                                                    onChange={(e) => setIsjumat(e.target.value)}
+                                                    id="startTime" />
+                                            </div>
+                                            <div className="my-auto">
+                                                -
+                                            </div>
+                                            <div className="d-flex mx-3">
+                                                <input type="time"
+                                                    className="inputJam mx-1 rounded-3 my-auto"
+                                                    value={endJumat}
+                                                    required
+                                                    onChange={(e) => setEndjumat(e.target.value)}
+                                                    placeholder="Time"
+                                                    id="endTime" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="d-flex ">
+                                        <div className="d-flex rowJam">
+                                            <div className="hari my-auto">
+                                                Saturday
+                                            </div>
+                                            <input type="time"
+                                                className="inputJam mx-3 rounded-3 my-auto"
+                                                id="time"
+                                                value={sabtu}
+                                                placeholder="Time"
+                                                onChange={(e) => setSabtu(e.target.value)}
+                                                required
+                                            />
+                                            <div className="my-auto">
+                                                Until
+                                            </div>
+                                            <input type="time"
+                                                className="inputJam mx-3 rounded-3 my-auto"
+                                                id="time"
+                                                value={asabtu}
+                                                placeholder="Time"
+                                                required
+                                                onChange={(e) => setaSabtu(e.target.value)}
+                                            />
+                                            <div className="istirahat my-auto">
+                                                timebreak
+                                            </div>
+                                            <div className="d-flex mx-3">
+                                                <input type="time"
+                                                    className="rounded-3 my-auto"
+                                                    required
+                                                    value={isSabtu}
+                                                    placeholder="Time"
+                                                    onChange={(e) => setIssabtu(e.target.value)}
+                                                    id="startTime" />
+                                            </div>
+                                            <div className="my-auto">
+                                                -
+                                            </div>
+                                            <div className="d-flex mx-3">
+                                                <input type="time"
+                                                    className="inputJam mx-1 rounded-3 my-auto"
+                                                    value={endSabtu}
+                                                    onChange={(e) => setEndsabtu(e.target.value)}
+                                                    placeholder="Time"
+                                                    required
+                                                    id="endTime" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="d-flex mb-3">
+                                        <div className="d-flex rowJam">
+                                            <div className="hari my-auto">
+                                                Sunday
+                                            </div>
+                                            <input type="time"
+                                                className="inputJam mx-3 rounded-3 my-auto"
+                                                id="time"
+                                                value={minggu}
+                                                placeholder="Time"
+                                                onChange={(e) => setMinggu(e.target.value)}
+                                                required
+                                            />
+                                            <div className="my-auto">
+                                                Until
+                                            </div>
+                                            <input type="time"
+                                                className="inputJam mx-3 rounded-3 my-auto"
+                                                id="time"
+                                                value={aminggu}
+                                                required
+                                                placeholder="Time"
+                                                onChange={(e) => setaMinggu(e.target.value)}
+                                            />
+                                            <div className="istirahat my-auto">
+                                                timebreak
                                             </div>
                                             <div className="d-flex mx-3">
                                                 <input type="time"
@@ -1542,14 +1608,14 @@ export const Mstaff = () => {
 
                                     <div className="d-flex flex-row justify-content-between">
                                         <div>
-                                            <Button variant="danger w-100">
+                                            <Button variant="danger w-100 " onClick={() => hardReset()}>
                                                 Reset
                                             </Button>
                                         </div>
 
                                         <div className="d-flex flex-row justify-content-between">
                                             <div className="mx-3">
-                                                <Button variant="secondary w-100">
+                                                <Button variant="secondary w-100" onClick={() => handleEditT()} >
                                                     Back
                                                 </Button>
                                             </div>

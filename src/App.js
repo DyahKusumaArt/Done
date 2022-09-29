@@ -11,6 +11,7 @@ import Mstudent from "./mstudent/student";
 import Manreport from "./manajemenReport/manReport";
 import ManajemenKategori from "./ManKategori/Mkategori";
 import Department from "./mDepartment/manajemenD";
+import Forget from "./halamanAwal/ForgetPassword";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Switch>
           <Route exact path="/" component={Login} />
           <Route exact path="/LForm" > <LForm /></Route>
+          <Route exact path="/forget" component={Forget}></Route>
           <Route exact path="/SignUp" component={SignUp} />
           <Route exact path="/muser" component={Filtering} />
           <Route exact path="/mstaff" component={Mstaff} />

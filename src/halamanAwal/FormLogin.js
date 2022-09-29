@@ -1,15 +1,18 @@
 import { Form, Container, Button, Card } from "react-bootstrap";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import logo from '../assets/image/D.png';
 import "../style/style.css";
-import { useHistory, Link } from "react-router-dom";
+import { useHistory, Link, useLocation } from "react-router-dom";
 import axios from "axios";
 
 function LForm() {
+    
+    let location = useLocation();
     const history = useHistory();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [msg, setMsg] = useState('');
+    
     //login
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -27,7 +30,7 @@ function LForm() {
     return (
         <div className="bgLogin">
             <div className="space">
-                <Container className="Flogin">
+                <Container className="w-40">
                     <Card>
                         <Card.Body>
                             <Card.Title className="text-center">
@@ -44,24 +47,23 @@ function LForm() {
                                             {msg}
                                         </div>)
                                         : (<></>)}
-
                                     <Form.Group className="mb-4" controlId="formBasicEmail">
                                         <Form.Label>EMAIL</Form.Label>
-                                        <Form.Control size="lg" type="email" placeholder="Email address" className="formColor"
-                                        required onChange={(e) => setEmail(e.target.value)} />
+                                        <Form.Control type="email" placeholder="Email address" className="formColor"
+                                            required onChange={(e) => setEmail(e.target.value)} />
 
                                     </Form.Group>
 
                                     <Form.Group className="mb-3" controlId="formBasicPassword" >
                                         <Form.Label className="d-flex justify-content-between">
                                             <div>PASSWORD </div>
-                                            <Link className="text-decoration-none text-dark coba ">Forgot password?</Link>
+                                            <Link to="/forget" className="text-decoration-none text-dark coba ">Forgot password?</Link>
                                         </Form.Label>
-                                        <Form.Control size="lg" type="password" placeholder="Password" className="formColor"
-                                           required onChange={(e) => setPassword(e.target.value)} />
+                                        <Form.Control type="password" placeholder="Password" className="formColor"
+                                            required onChange={(e) => setPassword(e.target.value)} />
                                     </Form.Group>
                                     <div className="d-grid" style={{ marginBottom: "230px" }}>
-                                        <Button variant="primary" type="submit" className="button is-success coba is-fullwidth"
+                                        <Button type="submit" className="button btn btn-lg is-success coba is-fullwidth kuning"
                                         >
                                             Log In
                                         </Button>

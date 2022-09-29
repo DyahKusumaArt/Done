@@ -5,7 +5,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
 import DataTable from "react-data-table-component";
 import axios from "axios";
-import { useHistory, useLocation } from "react-router-dom";
 import LayoutDashboard from "../layout/layout";
 
 
@@ -79,7 +78,16 @@ export const Mstudent = () => {
             center: true,
         },
         {
-            name: "edit",
+            name: "Gender",
+            selector: row => row.gender,
+            sortable: true,
+            center: true,
+            style: {
+                color: 'white',
+            },
+        },
+        {
+            name: "Action",
             center: true,
             cell: row => (
                 <div>
@@ -133,17 +141,17 @@ export const Mstudent = () => {
             })
     };
     const getUser = async () => {
-        axios.get("http://localhost:3000/users", { withCredentials: 'true' })
+        axios.get("http://localhost:3000/users-student", { withCredentials: 'true' })
             .then((response) => {
                 setUser(response.data);
             });
     };
     const filteredID = user.filter(
-        item => item && item.id == user_id ,
+        item => item && item.id == user_id,
     );
     const employeeMap = employee.map((item) => item.user_id)
     const studentMap = data.map((item) => item.user_id)
-    const userNew = user.filter(({id})=> !employeeMap.includes(id) && !studentMap.includes(id))
+    const userNew = user.filter(({ id }) => !employeeMap.includes(id) && !studentMap.includes(id))
     //add employee
     const [id, setId] = useState("");
     const [name_student, setNamestudent] = useState("");
@@ -176,7 +184,9 @@ export const Mstudent = () => {
 
     //modal edit
     const [tampil, setTampil] = useState(false);
-    const handleTtp = () => setTampil(false);
+    const handleTtp = () => {
+        delstate();
+        setTampil(false);}
     const handleEdit = (id) => {
         axios.get("http://localhost:3000/students/" + id)
             .then((response) => {
@@ -202,7 +212,10 @@ export const Mstudent = () => {
         })
             .then(
                 () => {
-                    console.log('mau');
+                    axios.patch("http://localhost:3000/users-edit/" + user_id, {
+                        full_name: name_student,
+                        phone: phone,
+                    }, { withCredentials: true })
                 }
             ).catch(
                 (eror) => {
@@ -213,6 +226,15 @@ export const Mstudent = () => {
     }
     const handleTutup = () => {
         setBuka(false);
+        delstate();
+    }
+    const delstate = () =>{
+        setId('');
+        setUserid('');
+        setNamestudent('');
+        setAddress('');
+        setPhone('');
+        setGender('');
     }
     const handleBuka = () => setBuka(true);
     //modal jadwal
@@ -286,14 +308,14 @@ export const Mstudent = () => {
                                                         <Form.Label>Gender</Form.Label>
                                                         <Form.Select aria-label="Default select example" required onChange={(e) => setGender(e.target.value)}>
                                                             <option value="">Select Gender</option>
-                                                            <option value="male">Male</option>
-                                                            <option value="female">Female</option>
+                                                            <option value="Male">Male</option>
+                                                            <option value="Female">Female</option>
                                                         </Form.Select>
                                                     </Col>
                                                     <Col>
                                                         <Form.Group className="mb-3" controlId="formBasicPhone">
                                                             <Form.Label>Phone Number</Form.Label>
-                                                            <Form.Control type="text" disabled placeholder="Phone Number"required value={item.phone} />
+                                                            <Form.Control type="text" disabled placeholder="Phone Number" required value={item.phone} />
                                                         </Form.Group>
                                                     </Col>
                                                 </Row>
@@ -308,8 +330,11 @@ export const Mstudent = () => {
 
                                                     </Col>
                                                 </Row>
-                                                <Row className=" mx-auto">
-                                                    <Button variant="success" type="submit" >
+                                                <Row className="mx-auto d-flex justify-content-between">
+                                                    <Button variant="danger" onClick={() => handleTutup()} className="w-45">
+                                                        Cancel
+                                                    </Button>
+                                                    <Button variant="success" type="submit" className="w-45" >
                                                         Save
                                                     </Button>
                                                 </Row>
@@ -328,7 +353,7 @@ export const Mstudent = () => {
                             keyboard={false}
                             centered
                         >
-                            <Modal.Header closeButton>
+                            <Modal.Header >
                                 <Modal.Title>Edit User Student</Modal.Title>
                             </Modal.Header>
                             <Modal.Body>
@@ -370,15 +395,18 @@ export const Mstudent = () => {
 
                                         <Col>
                                             <Form.Group className="mb-3" controlId="formBasicPassword">
-                                                <Form.Label>age</Form.Label>
+                                                <Form.Label>Azge</Form.Label>
                                                 <Form.Control type="text" placeholder="Department" required onChange={(e) => setAge(e.target.value)} value={age} />
                                             </Form.Group>
                                         </Col>
                                         <Col>
                                         </Col>
                                     </Row>
-                                    <Row className=" mx-auto">
-                                        <Button variant="success" type="submit" >
+                                    <Row className="mx-auto d-flex justify-content-between">
+                                        <Button variant="danger" onClick={() => handleTtp()} className="w-45">
+                                            Cancel
+                                        </Button>
+                                        <Button variant="success" type="submit" className="w-45" >
                                             Save
                                         </Button>
                                     </Row>

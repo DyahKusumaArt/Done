@@ -29,7 +29,7 @@ function SignIn() {
       role: role
     }, { withCredentials: 'true' }).then(() => {
       localStorage.setItem('email', email);
-      history.push("/mstaff");
+      history.push("/Lform");
     }).catch((error) => {
       console.log(error)
       setMsg(error.response.data.msg)
@@ -38,7 +38,7 @@ function SignIn() {
   return (
     <div className="bgLogin">
       <div className="space">
-        <Container className="px-lg-5">
+        <Container className="w-40">
           <Card>
             <Card.Body>
               <Card.Title className="text-center">
@@ -59,24 +59,24 @@ function SignIn() {
                     : (<></>)}
                   <Form.Group className="mb-2" controlId="formBasicName">
                     <Form.Label>Full Name</Form.Label>
-                    <Form.Control size="lg" type="text" placeholder="Full Name" className="formColor" required
+                    <Form.Control type="text" placeholder="Full Name" className="formColor" required
                       onChange={(e) => setFullname(e.target.value)} value={full_name} />
                   </Form.Group>
                   <Form.Group className="mb-2" controlId="formBasicPhone">
                     <Form.Label>Phone</Form.Label>
-                    <Form.Control size="lg" type="number" placeholder="Phone" className="formColor" required
+                    <Form.Control type="number" placeholder="Phone" className="formColor" required
                       onChange={(e) => setPhone(e.target.value)} value={phone} />
                   </Form.Group>
                   <Form.Group className="mb-2" controlId="formBasicEmail">
                     <Form.Label>EMAIL</Form.Label>
-                    <Form.Control size="lg" type="email" placeholder="Email Address" className="formColor" required
+                    <Form.Control type="email" placeholder="Email Address" className="formColor" required
                       onChange={(e) => setEmail(e.target.value)} value={email} />
                   </Form.Group>
                   <Form.Group className="mb-2" controlId="formBasicPassword">
                     <Form.Label className="d-flex justify-content-between">
                       <div>PASSWORD </div>
                     </Form.Label>
-                    <Form.Control size="lg" type="password" placeholder="Password" className="formColor" required
+                    <Form.Control type="password" placeholder="Password" className="formColor" required
                       onChange={(e) => setPassword(e.target.value)} value={password}
                     />
                   </Form.Group>
@@ -84,12 +84,12 @@ function SignIn() {
                     <Form.Label className="d-flex justify-content-between">
                       <div>CONFIRM PASSWORD </div>
                     </Form.Label>
-                    <Form.Control size="lg" type="password" placeholder="Confirm Password" className="formColor required"
+                    <Form.Control type="password" placeholder="Confirm Password" className="formColor required"
                       onChange={(e) => setConfPassword(e.target.value)} value={confPassword}
                     />
                   </Form.Group>
-                  <div className="mb d-grid">
-                    <Button variant="primary" type="submit" className="button is-success is-fullwidth"
+                  <div className="mb-3 d-grid ">
+                    <Button  type="submit" className="button btn btn-lg is-success is-fullwidth kuning"
                     > Create Account
                     </Button>
                   </div>

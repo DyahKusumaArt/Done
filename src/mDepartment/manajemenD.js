@@ -60,7 +60,7 @@ export const Department = () => {
             center: true,
         },
         {
-            name: "edit",
+            name: "Action",
             center: true,
             cell: row => (
                 <div>
@@ -202,7 +202,7 @@ export const Department = () => {
                             keyboard={false}
                             centered
                         >
-                            <Modal.Header closeButton>
+                            <Modal.Header >
                                 <Row>
                                     <Col>
                                         <Modal.Title>Add Department</Modal.Title>
@@ -221,8 +221,11 @@ export const Department = () => {
                                         </Col>
 
                                     </Row>
-                                    <Row className=" mx-auto">
-                                        <Button variant="success" type="submit" >
+                                    <Row className="mx-auto d-flex justify-content-between">
+                                        <Button variant="danger" onClick={() => handleTutup()} className="w-45">
+                                            Cancel
+                                        </Button>
+                                        <Button variant="success" type="submit" className="w-45" >
                                             Save
                                         </Button>
                                     </Row>
@@ -238,7 +241,7 @@ export const Department = () => {
                             keyboard={false}
                             centered
                         >
-                            <Modal.Header closeButton>
+                            <Modal.Header >
                                 <Modal.Title>Edit Department</Modal.Title>
                             </Modal.Header>
                             <Modal.Body>
@@ -252,8 +255,11 @@ export const Department = () => {
                                             </Form.Group>
                                         </Col>
                                     </Row>
-                                    <Row className=" mx-auto">
-                                        <Button variant="success" type="submit" >
+                                    <Row className="mx-auto d-flex justify-content-between">
+                                        <Button variant="danger" onClick={() => handleTtp()} className="w-45">
+                                            Cancel
+                                        </Button>
+                                        <Button variant="success" type="submit" className="w-45" >
                                             Save
                                         </Button>
                                     </Row>
@@ -287,6 +293,7 @@ export const Department = () => {
                                             <h2>email: {item.email}</h2>
                                         </Col>
                                     </Row> */}
+                                    
                                 <Row className=" mx-auto">
                                     <Button className="red" key={id} variant="danger" type="submit" onClick={() => deleteData(id)}>
                                         Delete

@@ -1,28 +1,30 @@
 import React from "react";
 import axios from "axios";
 import { useState, useEffect } from "react";
-import { Navbar, Button, Container,Dropdown } from "react-bootstrap";
+import { Navbar, Button, Container } from "react-bootstrap";
 import logo from '../assets/image/D.png';
+import { useHistory } from "react-router-dom";
 function Header({ active, setActive }) {
   const [coba, setCoba] = useState([]);
   const email = localStorage.getItem('email');
-  const [error, setError] = useState('');
+  const [msg, setError] = useState('');
+  const history = useHistory();
   useEffect(() => {
     getNama();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
   const getNama = async () => {
-    axios.get("http://localhost:3000/users", {withCredentials : "true"})
+    axios.get("http://localhost:3000/users", { withCredentials: "true" })
       .then((response) => {
         setCoba(response.data);
       }).catch((error) => {
-        setError(error.response.data.msg);
-    });
+        history.push('LForm')
+      });
   };
-  
+
   const filtt = coba.filter(
-    item => item.email === email
-  ); 
+    item => item.email == email
+  );
   return (
     <Container className="edit">
       <header
@@ -41,14 +43,14 @@ function Header({ active, setActive }) {
           <i className="fas fa-bars"></i>
         </Button>
         <div className={active ? "" : "n-active"}>
-          
-          
-          
+
+
+
           <i className="fas fa-bell" style={{ marginRight: "35px" }}></i>
-          {filtt.map((i)=>(i.full_name))}
-          <Navbar.Text className="text-end" style={{marginRight:"15px "}}>
+         <span className="headder"> {filtt.map((i) => (i.full_name))}</span>
+          <Navbar.Text className="text-end" style={{ marginRight: "15px " }}>
           </Navbar.Text>
-            <img
+          <img
             width="40"
             height="40"
             className="justify-content-end me-3 rounded-circle "
@@ -56,8 +58,8 @@ function Header({ active, setActive }) {
             src={logo}
             alt="l"
           />
-         
-          
+
+
         </div>
       </header>
     </Container>

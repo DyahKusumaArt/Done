@@ -1,6 +1,6 @@
 import { Button, Row, Col, Modal, Form } from "react-bootstrap";
 import React, { useState, useEffect } from "react";
-import "../style/UM.css"
+import "../style/style.css"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashAlt, faEdit } from '@fortawesome/free-solid-svg-icons';
 import DataTable from "react-data-table-component";
@@ -281,13 +281,23 @@ export const Filtering = () => {
             confPassword: confPassword,
             role: role,
         }, { withCredentials: 'true' })
-            .then((res) => {
-                history.push('/mstaff');
-                handleTutup();
-            }).catch((error) => {
-                setError(error.response.data.msg);
-            });
-
+        if (role == "Employee") {
+            axios.patch("http://localhost:3000/employee-edit/" + id, {
+                name_employee: full_name,
+                phone: phone,
+            }, { withCredentials: 'true' })
+                .then((res) => {
+                    handleTutup();
+                })
+        } else if (role == "Student") {
+            axios.patch("http://localhost:3000/students-edit/" + id, {
+                name_student: full_name,
+                phone: phone,
+            }, { withCredentials: 'true' })
+                .then((res) => {
+                    handleTutup();
+                })
+        }
     }
 
     //modal add
@@ -313,7 +323,7 @@ export const Filtering = () => {
             password: password,
             confPassword: confPassword,
             role: role,
-        },{ withCredentials: 'true' }).then(() => {
+        }, { withCredentials: 'true' }).then(() => {
             getUser();
             handleClose();
         }).catch((error) => {
@@ -383,7 +393,7 @@ export const Filtering = () => {
                                             {error}
                                         </div>)
                                         : (<></>)}
-                                    
+
                                 </Modal.Header>
                                 <Modal.Body>
                                     <Form onSubmit={insertData}>
@@ -415,11 +425,10 @@ export const Filtering = () => {
                                             <Col>
                                                 <Form.Label>Permissions</Form.Label>
                                                 <Form.Select aria-label="Default select example" required onChange={(e) => setRole(e.target.value)}>
-                                                    
-                                                    <option> Select Role</option>
+                                                    <option value=""> Select Role</option>
                                                     <option value="Employee">Employee</option>
                                                     <option value="Admin">Admin</option>
-                                                    <option value="Student">student</option>
+                                                    <option value="Student">Student</option>
                                                     <option value="Guest">Guest</option>
                                                 </Form.Select>
                                             </Col>
@@ -455,12 +464,15 @@ export const Filtering = () => {
 
                             <Modal //delete
                                 show={tampil}
-                               
+                                onHide={handleTtp}
                                 backdrop="static"
                                 size="lg"
                                 keyboard={false}
                                 centered
                             >
+                                <Modal.Header closeButton>
+
+                                </Modal.Header>
                                 <Modal.Body>
                                     <Form onSubmit={() => deleteData(id)}>
                                         <img className="text-center d-flex justify-content-center mx-auto" style={{ alignItems: 'center', width: '100px', height: '100px' }}
@@ -478,12 +490,9 @@ export const Filtering = () => {
                                             <h2>email: {item.email}</h2>
                                         </Col>
                                     </Row> */}
-                                        <Row className="mx-auto d-flex justify-content-between">
-                                            <Button variant="danger" onClick={() => handleTtp()} className="w-45">
-                                                Cancel
-                                            </Button>
-                                            <Button variant="success" type="submit" className="w-45" >
-                                                Save
+                                        <Row className=" mx-auto">
+                                            <Button className="red" key={id} variant="danger" type="submit">
+                                                Delete
                                             </Button>
                                         </Row>
                                     </Form>
@@ -493,7 +502,7 @@ export const Filtering = () => {
 
                             <Modal //modal edit
                                 show={edit}
-                                
+
                                 backdrop="static"
                                 size="lg"
                                 keyboard={false}

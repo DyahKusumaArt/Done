@@ -42,6 +42,10 @@ const tabs = [{
   route: "/manreport",
   icon: faChartLine,
   label: "Management Report"
+},{
+  route: "/notes",
+  icon: faStickyNote,
+  label: "Notes"
 }
 ];
 
@@ -76,7 +80,8 @@ function Sidebar({ active }) {
               ))
             }
           </Nav>
-          <Nav className="flex-column text-muted notes">
+          <hr className="text-white"/>
+          {/* <Nav className="flex-column text-muted notes">
             <NavItem className="text-muted">
               <NavLink to={"/notes"} className="nav-link rounded-pill" activeClassName="active">
                 <div className="text-align-center">
@@ -86,7 +91,7 @@ function Sidebar({ active }) {
               </NavLink>
             </NavItem>
             <></>
-          </Nav>
+          </Nav> */}
         </div>
       </div >
     </div>

@@ -12,10 +12,11 @@ function Login() {
     <div className="bgLogin">
       <Container className="Clogin">
         <div className='H1Log'>
-          Selamat Datang Di Masa Depan
+          Welcome To The Future
         </div>
         <p className="H3Log" style={{textAlign:"center"}}>
-          Bergabunglah Dengan Koding Akademi
+         Join With Us
+          <br/> Koding Akademi
         </p>
 
         <div className='Signin' >
@@ -42,6 +43,14 @@ function Login() {
         <div className="linkAcc ">
           <p style={{paddingRight:"10px", marginRight:"100px"}}>Don't have an account? <span style={{paddingLeft:"50px"}} ><Link to={"/SignUp"} className="text-decoration-none">Sign Up</Link></span> </p> 
           
+        </div>
+        <div>
+         <h3 style={{color:'white', textAlign:'left', paddingTop:'15px'}}>
+          Our Vision:
+         </h3>
+         <h5 style={{color:'white', textAlign:'left'}}>
+          Becoming the Best Coding Education Center in Indonesia
+         </h5>
         </div>
       </Container>
 
