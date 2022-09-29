@@ -218,7 +218,7 @@ export const ManajemenKategori = () => {
                         keyboard={false}
                         centered
                     >
-                        <Modal.Header closeButton>
+                        <Modal.Header >
                             <Row>
                                 <Col>
                                     <Modal.Title>Add Categories</Modal.Title>
@@ -247,8 +247,11 @@ export const ManajemenKategori = () => {
                                     </Col>
 
                                 </Row>
-                                <Row className=" mx-auto">
-                                    <Button variant="success" type="submit" >
+                                <Row className=" mx-auto  d-flex justify-content-between">
+                                    <Button variant="danger" onClick={() => handleTutup()} className="w-45">
+                                        Cancel
+                                    </Button>
+                                    <Button variant="success" type="submit" className="w-45" >
                                         Save
                                     </Button>
                                 </Row>
@@ -264,7 +267,7 @@ export const ManajemenKategori = () => {
                         keyboard={false}
                         centered
                     >
-                        <Modal.Header closeButton>
+                        <Modal.Header >
                             <Modal.Title>Edit Categories</Modal.Title>
                         </Modal.Header>
                         <Modal.Body>
@@ -288,8 +291,11 @@ export const ManajemenKategori = () => {
                                     </Col>
 
                                 </Row>
-                                <Row className=" mx-auto">
-                                    <Button variant="success" type="submit" >
+                                <Row className=" mx-auto  d-flex justify-content-between">
+                                <Button variant="danger" onClick={() => handleTtp()} className="w-45">
+                                        Cancel
+                                    </Button>
+                                    <Button variant="success" type="submit" className="w-45">
                                         Save
                                     </Button>
                                 </Row>
