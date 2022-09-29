@@ -68,7 +68,7 @@ export const Mstaff = () => {
         },
         {
             name: "Department",
-            selector:  row => (dataDe.filter(item =>item.id == row.department_id)).map((item) => item.name),
+            selector:  row => row.department.name,
             sortable: true,
             center: true,
 
@@ -522,34 +522,34 @@ export const Mstaff = () => {
 
     //modal jadwal
     const hardReset = () => {
-        setSenin("00:00:00");
-        setaSenin("00:00:00");
-        setSelasa("00:00:00");
-        setaSelasa("00:00:00");
-        setRabu("00:00:00");
-        setaRabu("00:00:00");
-        setKamis("00:00:00");
-        setaKamis("00:00:00");
-        setJumat("00:00:00");
-        setaJumat("00:00:00");
-        setSabtu("00:00:00");
-        setaSabtu("00:00:00");
-        setMinggu("00:00:00");
-        setaMinggu("00:00:00");
-        setIssenin("00:00:00");
-        setEndsenin("00:00:00");
-        setIsselasa("00:00:00");
-        setEndselasa("00:00:00");
-        setIsrabu("00:00:00");
-        setEndrabu("00:00:00");
-        setIskamis("00:00:00");
-        setEndkamis("00:00:00");
-        setIsjumat("00:00:00");
-        setEndjumat("00:00:00");
-        setIssabtu("00:00:00");
-        setEndsabtu("00:00:00");
-        setIsminggu("00:00:00");
-        setEndminggu("00:00:00");
+        setSenin("00:00");
+        setaSenin("00:00");
+        setSelasa("00:00");
+        setaSelasa("00:00");
+        setRabu("00:00");
+        setaRabu("00:00");
+        setKamis("00:00");
+        setaKamis("00:00");
+        setJumat("00:00");
+        setaJumat("00:00");
+        setSabtu("00:00");
+        setaSabtu("00:00");
+        setMinggu("00:00");
+        setaMinggu("00:00");
+        setIssenin("00:00");
+        setEndsenin("00:00");
+        setIsselasa("00:00");
+        setEndselasa("00:00");
+        setIsrabu("00:00");
+        setEndrabu("00:00");
+        setIskamis("00:00");
+        setEndkamis("00:00");
+        setIsjumat("00:00");
+        setEndjumat("00:00");
+        setIssabtu("00:00");
+        setEndsabtu("00:00");
+        setIsminggu("00:00");
+        setEndminggu("00:00");
     }
 
     const [editJ, setEditj] = useState(false);
